@@ -1,98 +1,243 @@
-tasks = []
-pr_counter = 2
-task_counter = 7
+let taskId = 1
+let prjId = 1
+let editTaskId = null
+let edProjId = null
+const allProjects = []
 
-const task = (title, desc, id) => {
-  return {title, desc, id};
-};
+const task = (title, desc, date, priority) => {  
+  id = taskId.toString()
+  taskId += 1
+  let completed = false  
+  return {title, desc, id, priority, completed, date};
+}
 
-const project = (pr_title, pr_id) => {
-  return {pr_title, pr_id}
+
+const taskCreateForm = `    <label for="task-title">Title</label>
+<input type="text" id="task-title" value = "Project Test" required>
+
+<label for="task-desc">Desc</label>
+<input type="text" id="task-desc" value = "Project Test" required>
+
+<label for="date">dATE:</label>
+<input type="date" id="date" name="birthday" value = "2001-12-12">
+
+<button id="addTask">
+    <span>Add Task</span>
+    <i class="fa-solid fa-plus"></i>
+</button>  `
+
+const taskEditForm =  `    <label for="ed-task-title">Title</label>
+<input type="text" id="ed-task-title" value = "Edit test title" required>
+
+<label for="ed-date">dATE:</label>
+<input type="date" id="ed-date" name="birthday" value = "1000-10-12">
+
+<label for="ed-task-desc">Desc</label>
+<input type="text" id="ed-task-desc" value = "Edit Test Content" required>
+
+<button id="editTask">
+    <span>Edit Task</span>
+    <i class="fa-solid fa-plus"></i>
+</button>  `
+
+
+
+function deleteTask(e) { 
+  allProjects.forEach((value) => {
+    value.tasks = value.tasks.filter((val => val.id != e.target.parentNode.id));
+  })
+  e.target.parentNode.remove();  
+}
+
+function checkTask(e) {
+  allProjects[0].tasks.forEach((v) => {
+    if (v.id === e.target.parentNode.id) {
+        v.completed = !v.completed
+    }
+  })
+}
+
+const project = (title) => {
+  id = prjId.toString()
+  tasks = []
+  prjId += 1
+  return {title, id, tasks}
+}
+
+const inbox = project("Inbox")
+allProjects.push(inbox)
+
+const project1 = project("project-1")
+allProjects.push(project1)
+
+const project2 = project("project-2")
+
+
+function renderSideBar() {
+  const projectContainer = document.querySelector("#project-container")
+  projectContainer.textContent = ""
+  allProjects.forEach((value) => {
+    const div = document.createElement("div")    
+    div.textContent = value.title
+    div.id = value.id
+    div.addEventListener("click", (e) => {
+      allProjects.forEach((value) => {
+        if (value.id === e.target.id) {
+          createTaskView(value)
+        }
+      })      
+    })
+    projectContainer.appendChild(div)
+  })
 }
 
 const createTaskObj = () => {
   const title = document.querySelector("#task-title").value
   const desc = document.querySelector("#task-desc").value
-  tasks.push(task(title, desc, Date.now()))  
+  const date = document.querySelector("#date").value
+  const atProject = document.querySelector("#content").classList[0]  
+  const tmpTask = task(title, desc, date, "high")
+  allProjects[0].tasks.push(tmpTask) 
+  allProjects.forEach((value) => {
+    if (value.id === atProject && value.id != "1") {
+      value.tasks.push(tmpTask)
+    }
+  })
 }
-
 
 function addTask() {
-  console.log("BHAI")
-document.querySelector("#addTask").addEventListener("click", (e) => {
-  pN = document.querySelector("#addTask").parentNode;
-  createTaskObj();
-  projects[parseInt(pN.classList[1])].push(tasks.at(-1))
-  createTaskView(projects[parseInt(pN.classList[1])], `${parseInt(pN.classList[1])}`)
-})
+  document.querySelector("#addTask").addEventListener("click", () => {
+    createTaskObj()
+      pN = document.querySelector("#addTask").parentNode.classList[0];
+      allProjects.forEach((value) => {
+      if (value.id === pN) {
+        createTaskView(value)
+      }
+    })  
+  })
 }
 
-function createTask() {
 
-}
 
 addTask()
 
+// function addTask() {
+//   console.log("BHAI")
+// document.querySelector("#addTask").addEventListener("click", (e) => {
+//   pN = document.querySelector("#addTask").parentNode.classList[1];
+//   console.log("pN:", typeof(pN))
+//   createTaskObj();
+//   allProjects.forEach((value) => {
+//     console.log(`value:`, value)
+//     console.log('id', typeof(value.id))
+//   if (value.id === pN) {
+//     console.log("Id is same as atProject")  
+//     createTaskView(value)
+//   }
+//   })  
+// })
+// }
+
+function createTask() {
+  
+}
+
+
 document.querySelector("#addProject").addEventListener("click", () => {
-
-  projects[pr_counter] = [task(`Task ${task_counter}`, `This is task ${task_counter}`, task_counter), 
-  task(`Task ${task_counter+1}`, `This is task ${task_counter}`, task_counter + 1), 
-  task(`Task ${task_counter+2}`, `This is task ${task_counter+2}`, task_counter+2)]
-
-
-  new_pr = document.createElement("div")  
-  new_pr.id = `project-${pr_counter}`
-  new_pr.textContent = document.querySelector("#pr-title").value;
-  new_pr.style = "background-color: lightcoral;"
-  const a = pr_counter
-  new_pr.addEventListener("click", () => {
-    createTaskView(projects[a], `${a}`)
-  }) 
-
-  document.querySelector("#sidebar div").appendChild(new_pr)
-
-  pr_counter = pr_counter+1
-  task_counter += 3
+  const pr_title = document.querySelector("#pr-title").value
+  tmpPrj = project(pr_title)
+  allProjects.push(tmpPrj)
+  renderSideBar()
+  console.log(allProjects.at(-1))
+  createTaskView(allProjects.at(-1))
 })
+
+function doEditStuff(e) {  
+  const title = document.querySelector("#ed-task-title").value
+  const desc = document.querySelector("#ed-task-desc").value  
+  const date = document.querySelector("#ed-date").value
+  allProjects[0].tasks.forEach((v) => {
+    if (v.id === editTaskId) {
+      v.title = title
+      v.desc = desc
+      v.date = date
+    }
+  })
+
+  createTaskView(edProjId)
+  document.querySelector("#editTask").disabled = true;
+}
+
+
 
 function showForm() {
   document.querySelector(".modal-form").classList.add("show-modal");
 }
 
-const createTaskView = (taskArr, contProj) => {  
+const createTaskView = (contProj) => {  
+  
   const taskcontainer = document.querySelector("#content")
   taskcontainer.className = ""
-  taskcontainer.classList.add("inbox")
-  taskcontainer.classList.add(contProj)
-  taskcontainer.innerHTML = `    <label for="task-title">Title</label>
-  <input type="text" id="task-title" value = "Project Test" required>
-
-  <label for="task-desc">Desc</label>
-  <input type="text" id="task-desc" value = "Project Test" required>
-
-  <button id="addTask">
-      <span>Add Task</span>
-      <i class="fa-solid fa-plus"></i>
-  </button>  `
-  taskArr.forEach((value) => {
+  taskcontainer.classList.add(contProj.id)
+  taskcontainer.innerHTML = taskCreateForm
+  taskcontainer.innerHTML += taskEditForm
+  console.log(contProj.tasks)
+  contProj.tasks.forEach((value) => {
     const taskdiv = document.createElement("div")
     taskdiv.classList.add("taskdiv")
+    taskdiv.id = value.id
     const title = document.createElement("div")
     title.textContent = value.title
     const desc = document.createElement("div")
     desc.textContent = value.desc
+    const date = document.createElement("div")
+    date.textContent = value.date
     taskdiv.appendChild(title)
     taskdiv.appendChild(desc)
+    taskdiv.appendChild(date)
+
+
+    const delete_btn = document.createElement("button")  
+    delete_btn.textContent = "Dlt"
+    delete_btn.addEventListener("click", deleteTask)
+    taskdiv.appendChild(delete_btn)  
+   
+    const taskCheck = document.createElement("input")    
+    taskCheck.id = "checked"
+    taskCheck.type = "checkbox"
+    if (value.completed == false) {
+      taskCheck.checked = false
+    }
+    else {
+      taskCheck.checked = true
+    }    
+    taskCheck.addEventListener("click", checkTask)
+    taskdiv.appendChild(taskCheck)  
+
+
+    const taskEdit = document.createElement("button")
+    taskEdit.id = "task-edit"
+    taskEdit.textContent = "edit"
+    taskEdit.addEventListener("click", (e) => {
+      document.querySelector("#editTask").disabled = false;
+      editTaskId = e.target.parentNode.id
+      console.log(`We will edit tasks with this id ${editTaskId}`)
+      allProjects.forEach((val) => {
+        if (val.id == e.target.parentNode.parentNode.classList[0]) {
+          console.log(val)
+          edProjId = val
+        }
+      })
+      console.log(edProjId)
+      document.querySelector("#editTask").addEventListener("click", doEditStuff)
+    })
+    taskdiv.appendChild(taskEdit)
+
     taskcontainer.appendChild(taskdiv)  
   })
   addTask()
+  document.querySelector("#editTask").disabled = true;
 }
-
-document.querySelector("#create-task").addEventListener("click", () => {
-  createTaskObj()
-  createTaskView(tasks.at(-1))
-})
-
 
 document.querySelector("#book_closebutton").addEventListener("click", hideForm);
 
@@ -100,35 +245,25 @@ function hideForm() {
   document.querySelector(".modal-form").classList.remove("show-modal");
 }
 
+renderSideBar()
+createTaskView(allProjects[0])
+
+// document.querySelector("#inbox").addEventListener("click", showInbox)
+// //document.querySelector("#project-1").addEventListener("click", showProjectOne)
+
+// function showInbox() {
+//   createTaskView(inbox.tasks, inbox.id)
+// }
+
+// function showProjectOne() {
+//   createTaskView(projects[1], "1")
+// }
 
 
 
-document.querySelector("#inbox").addEventListener("click", showInbox)
-document.querySelector("#project-1").addEventListener("click", showProjectOne)
 
-function showInbox() {
-  createTaskView(projects[0], "0")
-}
-
-function showProjectOne() {
-  createTaskView(projects[1], "1")
-}
-
-console.log(tasks)
-
-dummytask1 = task("Task 1", "This is task 1", 1)
-dummytask2 = task("Task 2", "This is task 2", 2)
-dummytask3 = task("Task 3", "This is task 3", 3)
-
-dummytask4 = task("Task 4", "This is task 4", 4)
-dummytask5 = task("Task 5", "This is task 5", 5)
-dummytask6 = task("Task 6", "This is task 6", 6)
-
-inbox_tasks = [dummytask1, dummytask2, dummytask3]
-projectOne_tasks = [dummytask4, dummytask5, dummytask6]
-
-projects = {0: inbox_tasks, 1: projectOne_tasks}
-console.log(projects[0])
+//projects = {0: inbox_tasks, 1: projectOne_tasks}
+//console.log(projects[0])
 
 
 
@@ -160,6 +295,9 @@ console.log(projects[0])
 // function hideForm() {
 //   document.querySelector(".modal-form").classList.remove("show-modal");
 // }
+
+
+
 
 // function currentBook() {
 //   return myLibrary.at(-1)
@@ -195,6 +333,8 @@ console.log(projects[0])
 //   const title_div = document.createElement('div')
 //   title_div.textContent = `Title: ${value.title}`
 //   card_div.appendChild(title_div)
+
+document.querySelector("#editTask").disabled = true;
 
 //   const auth_div = document.createElement('div')
 //   auth_div.textContent = `Author: ${value.author}`
@@ -275,3 +415,19 @@ console.log(projects[0])
 // })
 
 // loadLibrary();
+
+
+
+
+
+
+
+//////// notes
+////// 1. ADD PRIORITY CHECKBOX FOR TASKS
+/// 2. ADD 1WEEK CALENDARY ON SIDEBAR
+//3 ADD DUE TODAY ON SIDEBARD
+///4. OPTIONAL MAYBE SORT ITMES BY DATE
+///5. ACTUALLY REAFACTOR YOUR CODE LMAO
+///6. MAYBE SEGREGATE TASKS FROM INBOX AND PROJECTS
+///7. ADD A COMPLETED TASK SIDEBARD WHERE ALL TASKS ARE SHOWN IN ORDER OF COMPLETTION, COMPLETED TASKS CANT BE UNCOMPLETED
+//8. ADD MODAL TO ADD TASKS AND PROJECTS, also to EDIT TASKS AND PROJECTS
