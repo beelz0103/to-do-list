@@ -70,8 +70,6 @@ allProjects.push(inbox)
 const project1 = project("project-1")
 allProjects.push(project1)
 
-const project2 = project("project-2")
-
 
 function renderSideBar() {
   const projectContainer = document.querySelector("#project-container")
