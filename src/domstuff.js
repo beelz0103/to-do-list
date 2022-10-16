@@ -1,5 +1,6 @@
-export { taskCreateForm, createDiv, generateProjectForm}
-import { createProject, createTaskView } from "./index.js"
+// export { taskCreateForm, createDiv, projectFormController, getProjectTitle }
+// import { createProject, createTaskView } from "./index.js"
+// import { project, allProjects, createProjectObject } from "./project.js"
 
 const taskCreateForm = `
 <button id="ADDDBUTTOON">ADD BUTTON</button>
@@ -28,37 +29,3 @@ const taskCreateForm = `
 function createDiv() {
   return document.createElement("div")
 }
-
-
-// project form DOM Stuff for a lack of better naming
-const projectForm = document.querySelector("#projForm")
-const newProjectButton = document.querySelector("#addNewProject")
-const addProjectButton = document.querySelector("#addProject")
-const hideProjectFormButton = document.querySelector("#closeProjForm")
-
-function generateProjectForm() { //RENAME THIS TO projectFormController or something later 
-  hideProjectForm()
-  newProjectButton.addEventListener("click", showProjectForm)
-  addProjectButton.addEventListener("click", createProjBleh)
-  hideProjectFormButton.addEventListener("click", hideProjectForm)
-}
-
-function showProjectForma() {
-  document.querySelector("#addProject").addEventListener("click", createProj)
-}
-
-function showProjectForm() {  
-  projectForm.style.display = "block"
-}
-
-function hideProjectForm() {
-  projectForm.style.display = "none"  
-  projectForm.reset()
-}
-
-function createProjBleh() {
-  console.log("Hello")
-  createProject()
-  hideProjectForm()  
-}
-

@@ -10,22 +10,42 @@
 // OR 7. GRAY OUT TASKS WHEN CLICK ON COMPLETED TASKS
 //8. ADD MODAL TO ADD TASKS AND PROJECTS, also to EDIT TASKS AND PROJECTS
 
-import { taskCreateForm, createDiv, generateProjectForm } from "./domstuff.js"
-import { project } from "./project.js"
+// import { taskCreateForm, createDiv, projectFormController, getProjectTitle } from "./domstuff.js"
+import { project, allProjects, createProjectObject, projectManipulator, renderInbox } from "./project.js"
+import { task, tasktManipulator, createTaskObj } from "./task.js"
+
 import './style.css';
-export { createProj, createProject }
+export { createTaskView }
 
-generateProjectForm()
+const taskCreateForm = `
+<button id="ADDDBUTTOON">ADD BUTTON</button>
+<div id="TASKSSSFORM">
+<label for="task-title">Title</label>
+<input type="text" id="task-title" value = "Project Test" required>
 
-let taskId = 1
-const allProjects = []
+<label for="task-desc">Desc</label>
+<input type="text" id="task-desc" value = "Project Test" required>
 
-const task = (title, desc, date, priority) => {  
-  const id = taskId.toString()
-  taskId += 1
-  let completed = false  
-  return {title, desc, id, priority, completed, date};
-}
+<label for="date">dATE:</label>
+<input type="date" id="date" name="birthday" value = "2001-12-12">
+
+<label for="task-priority">Choose a car:</label>
+<select id="task-priority" name="priority">
+  <option value="low">Low</option>
+  <option value="medium" selected>Medium</option>
+  <option value="high">High</option>
+</select>
+
+<button id="addTask">
+    <span>Add Task</span>
+    <i class="fa-solid fa-plus"></i>
+</button>
+
+<button id="closeTask">
+    <span>CLose Task</span>
+    <i class="fa-solid fa-plus"></i>
+</button>
+<div>`
 
 function deleteTask(e) { 
   allProjects.forEach((value) => {
@@ -43,24 +63,6 @@ function checkTask(e) {
   })
 }
 
-const createTaskObj = () => {
-  const title = document.querySelector("#task-title").value
-  const desc = document.querySelector("#task-desc").value
-  const date = document.querySelector("#date").value
-  const atProject = document.querySelector("#content").classList[0]  
-  const tmpTask = task(title, desc, date, "high")
-  allProjects[0].tasks.push(tmpTask) 
-  allProjects.forEach((value) => {
-    if (value.id === atProject && value.id != "1") {
-      value.tasks.push(tmpTask)
-    }
-  })
-}
-
-
-
-
-
 function addTask() {
   document.querySelector("#addTask").addEventListener("click", () => {
     createTaskObj()
@@ -73,90 +75,6 @@ function addTask() {
     })  
   })
 }
-
-//ADDS NEW PROJECT
-function getProjectTitle() {
-  return document.querySelector("#pr-title").value
-}
-
-function createProjectObject() {
-  const projecTitle = getProjectTitle()
-  const newProject = project(projecTitle)
-  allProjects.push(newProject)
-}
-
-function createProject() {
-  createProjectObject()
-  renderSideBarProjectOnly()
-  createTaskView(allProjects.at(-1))
-}
-
-
-function renderSideBarProjectOnly() {
-  const projectContainer = document.querySelector("#project-container")
-  projectContainer.textContent = ""
-  allProjects.forEach((projectObject) => {
-    if (projectObject.id != "1") {   
-      const projectDiv = createProjectDiv(projectObject)
-      projectContainer.appendChild(projectDiv)
-    }
-  })
-}
-
-function createProjectDiv(prj) { //helps renderSideBarProjectOnly() function
-  const div = createDiv()   
-  div.textContent = prj.title
-  div.id = prj.id
-  div.addEventListener("click", () => {
-    createTaskView(prj)   
-  })
-  return div
-}
-
-//END OF ADDS NEW PROJ
-
-
-function createProj() {
-  createProjectObject()
-  renderSideBar()
-  createTaskView(allProjects.at(-1))
-}
-
-function renderSideBar() {
-  const projectContainer = document.querySelector("#project-container")
-  projectContainer.textContent = ""
-  allProjects.forEach((value) => {
-    if (value.id == "1") {
-      console.log(1)
-      const inbx = document.querySelector("#sidebar div")
-      inbx.id = "1"
-      inbx.addEventListener("click", (e) => {
-        allProjects.forEach((value) => {
-          if (value.id === e.target.id) {
-            createTaskView(value)
-          }
-        })      
-      })
-    }
-    else {
-      console.log(`Project div with title ${value.id} was created`)   
-      const div = createDiv()   
-      div.textContent = value.title
-      div.id = value.id
-      div.addEventListener("click", (e) => {
-        console.log(`Project div with title ${value.id} was given evenet listener`)   
-         //allProjects.forEach((value) => {
-          // if (value.id === e.target.id) {
-            console.log(`Project div with title ${value.id} was created tasks view of`)   
-            createTaskView(value)
-           //}
-        //})      
-      })
-      projectContainer.appendChild(div)
-    }
-  })
-}
-
 
 const createTaskView = (contProj) => {   
   const taskcontainer = document.querySelector("#content")
@@ -209,23 +127,11 @@ const createTaskView = (contProj) => {
     console.log("Hi")
     const TASKFROM = document.querySelector("#TASKSSSFORM")
     TASKFROM.style.display = "block"
-  })
-  
+  })  
 
   addTask()
 }
 
-const inbox = project("Inbox")
-allProjects.push(inbox)
 renderInbox()
-
-function renderInbox() {
-  const inbx = document.querySelector("#sidebar div")
-  inbx.id = "1"
-  inbx.addEventListener("click", () => {
-    createTaskView(allProjects[0])
-  })
-  createTaskView(allProjects[0])
-}
-
-
+projectManipulator.projectFormController()
+tasktManipulator.taskFormController()

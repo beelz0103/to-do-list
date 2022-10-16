@@ -21,6 +21,13 @@ body {
   border: 1px solid black;
 }
 
+#content-container {
+  background-color: lightgreen;
+}
+
+#taskFormContainer {
+  background-color: aquamarine;
+}
 
 #sidebar {  
   display: flex;
