@@ -18,3 +18,4 @@ import './style.css';
 projectManipulator.renderInbox()
 projectManipulator.projectFormController()
 taskManipulator.taskFormController()
+taskManipulator.hideFormOnClickOutside()

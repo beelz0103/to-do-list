@@ -21,6 +21,20 @@ const createTaskObj = () => {
   addTaskObjToArray(newTask)
 }
 
+const updateTaskObj = (task) => {
+  const taskValues = taskManipulator.getTaskValues()
+  console.log(taskValues)
+  console.log(task)
+  task.title = taskValues.title
+  task.desc = taskValues.desc
+  task.date = taskValues.date
+  task.priority = taskValues.priority
+}
+
+const getTaskObjFromId = (taskId) => {
+ return allProjects[0].tasks.filter(task => task.id == taskId).at(0)
+}
+
 function deleteTaskObj(taskId) { 
   allProjects.forEach((project) => {
     project.tasks = project.tasks.filter((task => task.id != taskId));
@@ -48,21 +62,44 @@ const taskDOM = () => {
   const taskForm = document.querySelector("#taskForm")
   const newTaskButton = document.querySelector("#addNewTask")
   const addTaskButton = document.querySelector("#add-Task")
+  const editTaskButton = document.querySelector("#edit-Task")
   const hideTaskFormButton = document.querySelector("#closeTaskForm")
 
   function taskFormController() { //RENAME THIS TO projectFormController or something later 
     hideTaskForm()
     newTaskButton.addEventListener("click", showTaskForm)
     addTaskButton.addEventListener("click", addTask)
+    editTaskButton.addEventListener("click", editTask)
     hideTaskFormButton.addEventListener("click", hideTaskForm)
   }
   
-  function showTaskForm() {  
+  function showTaskForm(e) {      
     taskForm.style.display = "block"
+    hideButton(newTaskButton)
+    hideButton(editTaskButton)
+  }
+
+  const showEditForm = (e) => {
+    console.log("hi")
+    taskForm.style.display = "block"
+    const taskId = e.target.id   
+    console.log("Edit task button id beofre", editTaskButton.id)
+    editTaskButton.classList = ""
+    editTaskButton.classList.add(taskId)
+    console.log(editTaskButton.classList[0])
+    console.log("Edit task button id ", editTaskButton.id)
+    const task = getTaskObjFromId(taskId)
+    updateEditFormValues(task)
+    hideButton(newTaskButton)
+    hideButton(addTaskButton)
+    showButton(editTaskButton)
+
   }
   
   function hideTaskForm() {
     taskForm.style.display = "none"  
+    showButton(newTaskButton)
+    showButton(addTaskButton)
     taskForm.reset()
   }
   
@@ -71,12 +108,33 @@ const taskDOM = () => {
     hideTaskForm()  
   }
 
+  function editTask(e) {
+    const taskId = editTaskButton.classList[0]
+    const task = getTaskObjFromId(taskId)
+    console.log(task)
+    updateTaskObj(task)
+    hideTaskForm()    
+    const currentProject = getProjectFromID()
+    createNewTaskView(currentProject) //uses project id to generare task view
+  }
+
   const getTaskValues = () => { 
     const title = document.querySelector("#task-title").value
     const desc = document.querySelector("#task-desc").value
     const date = document.querySelector("#date").value
     const priority = document.querySelector("#task-priority").value
     return { title, desc, date, priority }
+  }
+
+  const updateEditFormValues = (task) => { 
+    const title = document.querySelector("#task-title")
+    title.value = task.title
+    const desc = document.querySelector("#task-desc")
+    desc.value = task.desc
+    const date = document.querySelector("#date")
+    date.value = task.date
+    const priority = document.querySelector("#task-priority")
+    priority.value = task.priority
   }
 
   function getProjectFromID() {
@@ -98,7 +156,6 @@ const taskDOM = () => {
     console.log("LMAO TASK WAS CREATED")
     createTaskObj()
     const currentProject = getProjectFromID()
-    console.log(currentProject)
     createNewTaskView(currentProject) //uses project id to generare task view
   }
 
@@ -109,9 +166,29 @@ const taskDOM = () => {
       const taskDiv = taskDivHelper.createTaskDiv()    
       taskContainer.appendChild(taskDiv)  
     })
-  } 
+  }   
 
-  return { getTaskValues, createNewTaskView, taskFormController }
+  const hideButton = (button) => {
+    button.style.display = "none"
+  }
+
+  const showButton = (button) => {
+    button.style.display = "block"
+  }
+
+  const hideFormOnClickOutside = () => {
+    document.addEventListener("click", (e) => {
+      console.log("Hi")
+      if (taskForm.style.display === "block") {
+        if (e.target != taskForm) {    
+          console.log("Hi2")
+          //hideTaskForm()
+        } 
+      }
+    })
+  }
+
+  return { getTaskValues, createNewTaskView, taskFormController, hideFormOnClickOutside, showEditForm }
 }
 
 const createTaskDivHelper = (task) => {
@@ -124,6 +201,7 @@ const createTaskDivHelper = (task) => {
     taskDiv.appendChild(createPriorityDiv())
     taskDiv.appendChild(createDateDiv())
     taskDiv.appendChild(createDeleteButton())
+    taskDiv.appendChild(createEditButton())
     taskDiv.appendChild(createCheckButton())
     return taskDiv
   }
@@ -175,6 +253,14 @@ const createTaskDivHelper = (task) => {
     }    
     checkBtn.addEventListener("click", checkTask)
     return checkBtn
+  }
+
+  const createEditButton = () => {
+    const editBtn = document.createElement("button") 
+    editBtn.textContent = "Edit"
+    editBtn.id = task.id
+    editBtn.addEventListener("click", taskManipulator.showEditForm)
+    return editBtn
   }
 
   function deleteTask(e) { 
