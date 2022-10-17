@@ -1,6 +1,5 @@
 import { allProjects, project} from "./project.js"
-import { createTaskView } from "./index.js"
-export { task, tasktManipulator, createTaskObj, createNewTaskView }
+export { task, taskManipulator, createTaskObj }
 
 let taskId = 1
 
@@ -13,13 +12,24 @@ const task = (title, desc, date, priority) => {
 
 const createTaskObj = () => {
   console.log("USED TASK MODULE")
-  const taskValues = tasktManipulator.getTaskValues()
+  const taskValues = taskManipulator.getTaskValues()
   const title = taskValues.title
   const desc = taskValues.desc
   const date = taskValues.date
   const priority = taskValues.priority
   const newTask = task(title, desc, date, priority)
   addTaskObjToArray(newTask)
+}
+
+function deleteTaskObj(taskId) { 
+  allProjects.forEach((project) => {
+    project.tasks = project.tasks.filter((task => task.id != taskId));
+  })
+}
+
+function checkTaskObj(taskId) { 
+  const task = allProjects[0].tasks.filter(task => task.id == taskId).at(0)
+  task.completed = !task.completed
 }
 
 const addTaskObjToArray = (newTask) => {
@@ -39,10 +49,6 @@ const taskDOM = () => {
   const newTaskButton = document.querySelector("#addNewTask")
   const addTaskButton = document.querySelector("#add-Task")
   const hideTaskFormButton = document.querySelector("#closeTaskForm")
-
-  const createDiv = () => {
-    return document.createElement("div")
-  }
 
   function taskFormController() { //RENAME THIS TO projectFormController or something later 
     hideTaskForm()
@@ -76,15 +82,16 @@ const taskDOM = () => {
   function getProjectFromID() {
     const taskMainContainer = document.querySelector("#content-container")
     const projectId = taskMainContainer.classList[0]
-    let project = null
-    console.log(typeof(projectId))
-    console.log(allProjects)
-    allProjects.forEach((value) => {
-      if (value.id == projectId) {
-        project = value
-      }
-    })
-    return project
+    return allProjects.filter(value => value.id == projectId)[0]
+  }
+
+  const setUpTaskContainer = (proj) => {
+    const taskMainContainer = document.querySelector("#content-container")
+    const taskContainer = document.querySelector("#content")
+    taskMainContainer.className = proj.id
+    taskContainer.className = proj.id
+    taskContainer.textContent = ""
+    return taskContainer
   }
 
   function createTask() {
@@ -95,55 +102,100 @@ const taskDOM = () => {
     createNewTaskView(currentProject) //uses project id to generare task view
   }
 
-  return { getTaskValues,  taskFormController}
+  const createNewTaskView = (contProj) => {   
+    const taskContainer = setUpTaskContainer(contProj)
+    contProj.tasks.forEach((task) => {
+      const taskDivHelper = createTaskDivHelper(task)
+      const taskDiv = taskDivHelper.createTaskDiv()    
+      taskContainer.appendChild(taskDiv)  
+    })
+  } 
+
+  return { getTaskValues, createNewTaskView, taskFormController }
 }
 
-const tasktManipulator = taskDOM()
+const createTaskDivHelper = (task) => {
+  const createTaskDiv = () => {
+    const taskDiv = document.createElement("div")
+    taskDiv.classList.add("taskDiv")
+    taskDiv.id = task.id
+    taskDiv.appendChild(createTitleDiv())
+    taskDiv.appendChild(createDescDiv())
+    taskDiv.appendChild(createPriorityDiv())
+    taskDiv.appendChild(createDateDiv())
+    taskDiv.appendChild(createDeleteButton())
+    taskDiv.appendChild(createCheckButton())
+    return taskDiv
+  }
 
-// function createNewTaskView() {
-//   console.log("Hi")
-// }
+  const createTitleDiv = () => {
+    const titleDiv = document.createElement("div")
+    titleDiv.classList.add("titleDiv")
+    titleDiv.textContent = task.title
+    return titleDiv
+  }
 
+  const createDescDiv = () => {
+    const descDiv = document.createElement("div")
+    descDiv.classList.add("descDiv")
+    descDiv.textContent = task.desc
+    return descDiv
+  }
 
+  const createPriorityDiv = () => {
+    const priorityDiv = document.createElement("div")
+    priorityDiv.classList.add("priorityDiv")
+    priorityDiv.textContent = task.priority
+    return priorityDiv
+  }
 
+  const createDateDiv = () => {
+    const dateDiv = document.createElement("div")
+    dateDiv.classList.add("dateDiv")
+    dateDiv.textContent = task.date
+    return dateDiv
+  }
 
-const createNewTaskView = (contProj) => {   
-  const taskcontainer = document.querySelector("#content")
-  taskcontainer.className = ""
-  taskcontainer.textContent = ""
-  console.log(contProj)
-  taskcontainer.classList.add(contProj.id)
-  contProj.tasks.forEach((value) => {
-    const taskdiv = document.createElement("div")
-    taskdiv.classList.add("taskdiv")
-    taskdiv.id = value.id
-    const title = document.createElement("div")
-    title.textContent = value.title
-    const desc = document.createElement("div")
-    desc.textContent = value.desc
-    const date = document.createElement("div")
-    date.textContent = value.date
-    taskdiv.appendChild(title)
-    taskdiv.appendChild(desc)
-    taskdiv.appendChild(date)
+  const createDeleteButton = () => {
+    const deleteBtn = document.createElement("button")  
+    deleteBtn.textContent = "Delete"
+    deleteBtn.addEventListener("click", deleteTask)
+    return deleteBtn
+  }
 
-
-    const delete_btn = document.createElement("button")  
-    delete_btn.textContent = "Dlt"
-
-    taskdiv.appendChild(delete_btn)  
-   
-    const taskCheck = document.createElement("input")    
-    taskCheck.id = "checked"
-    taskCheck.type = "checkbox"
-    if (value.completed == false) {
-      taskCheck.checked = false
+  const createCheckButton = () => {
+    const checkBtn = document.createElement("input")   
+    checkBtn.id = "chekcBox"
+    checkBtn.type = "checkbox"
+    if (task.completed == false) {
+      checkBtn.checked = false
     }
     else {
-      taskCheck.checked = true
+      checkBtn.checked = true
     }    
-    taskdiv.appendChild(taskCheck)    
+    checkBtn.addEventListener("click", checkTask)
+    return checkBtn
+  }
 
-    taskcontainer.appendChild(taskdiv)  
-  })
+  function deleteTask(e) { 
+    const taskId = e.target.parentNode.id
+    deleteTaskObj(taskId)
+    e.target.parentNode.remove();  
+  }
+  
+  function checkTask(e) {
+    const taskId = e.target.parentNode.id
+    checkTaskObj(taskId)
+    e.target.parentNode.classList.toggle("makeTaskGrayed")
+  }
+
+  return { createTaskDiv }
 }
+
+const taskManipulator = taskDOM()
+
+
+
+
+
+

@@ -1,6 +1,5 @@
-export { project, allProjects, createProjectObject, projectManipulator, renderInbox }
-import { createTaskView } from "./index.js"
-import { createNewTaskView } from "./task.js"
+export { project, allProjects, createProjectObject, projectManipulator }
+import { taskManipulator } from "./task.js"
 let prjId = 1
 const allProjects = []
 
@@ -18,22 +17,11 @@ const createProjectObject = () => {
   allProjects.push(newProject)
 }
 
-function assignTaskContainerClass(proj) {
-  const taskMainContainer = document.querySelector("#content-container")
-  taskMainContainer.classList = ""
-  taskMainContainer.classList.add(proj.id)
-  createNewTaskView(proj)   
-}
-
 const projectDOM = () => {
   const projectForm = document.querySelector("#projForm")
   const newProjectButton = document.querySelector("#addNewProject")
   const addProjectButton = document.querySelector("#addProject")
   const hideProjectFormButton = document.querySelector("#closeProjForm")
-
-  const createDiv = () => {
-    return document.createElement("div")
-  }
 
   function projectFormController() { //RENAME THIS TO projectFormController or something later 
     hideProjectForm()
@@ -68,9 +56,17 @@ const projectDOM = () => {
   function createProject() {
     createProjectObject()
     renderSideBarProjectOnly()
-    assignTaskContainerClass(allProjects.at(-1))
+    taskManipulator.createNewTaskView(allProjects.at(-1))       
+  }  
+
+  const renderInbox = () => {
+    const inbx = document.querySelector("#sidebar div")
+    inbx.id = "1"
+    inbx.addEventListener("click", () => {
+      taskManipulator.createNewTaskView(allProjects[0])  
+    })
+    taskManipulator.createNewTaskView(allProjects[0])  
   }
-  
   
   function renderSideBarProjectOnly() {
     const projectContainer = document.querySelector("#project-container")
@@ -84,31 +80,19 @@ const projectDOM = () => {
   }
   
   function createProjectDiv(prj) { //helps renderSideBarProjectOnly() function
-    const div = createDiv()   
+    const div = document.createElement("div") 
     div.textContent = prj.title
     div.id = prj.id
     div.addEventListener("click", () => {
-      assignTaskContainerClass(prj)
-      
+      taskManipulator.createNewTaskView(prj)  
     })
     return div
   }
 
-
-
-  return { projectFormController, getProjectTitle, getProjectValues }
+  return { projectFormController, getProjectTitle, getProjectValues, renderInbox }
 }
 
 const projectManipulator = projectDOM()
-
-function renderInbox() {
-  const inbx = document.querySelector("#sidebar div")
-  inbx.id = "1"
-  inbx.addEventListener("click", () => {
-    assignTaskContainerClass(allProjects[0])  
-  })
-  assignTaskContainerClass(allProjects[0])  
-}
 
 const inbox = project("Inbox")
 allProjects.push(inbox)
