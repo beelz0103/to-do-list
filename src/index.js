@@ -10,12 +10,12 @@
 // OR 7. GRAY OUT TASKS WHEN CLICK ON COMPLETED TASKS
 //8. ADD MODAL TO ADD TASKS AND PROJECTS, also to EDIT TASKS AND PROJECTS
 
-// import { taskCreateForm, createDiv, projectFormController, getProjectTitle } from "./domstuff.js"
-import { allProjects, projectManipulator } from "./project.js"
-import { taskManipulator, createTaskObj } from "./task.js"
+import { taskManipulator } from "./taskdom.js"
+import { projectFormController, renderInbox } from "./projectdom.js"
+import { allProjects, prjId } from "./project.js";
+import { taskid } from "./task.js"
 import './style.css';
 
-projectManipulator.renderInbox()
-projectManipulator.projectFormController()
+renderInbox()
+projectFormController()
 taskManipulator.taskFormController()
-taskManipulator.hideFormOnClickOutside()
