@@ -1,6 +1,10 @@
-export { allProjects, createProjectObject, prjId }
+export { allProjects, createProjectObject, prjId, project, setPrjId }
 
-let prjId = 1
+let prjId = null
+
+function setPrjId(pid) {
+  prjId = pid
+}
 
 const allProjects = []
 
@@ -17,5 +21,5 @@ const createProjectObject = (projectValues) => {
   allProjects.push(newProject)
 }
 
-const inbox = project("Inbox")
-allProjects.push(inbox)
+// const inbox = project("Inbox")
+// allProjects.push(inbox)

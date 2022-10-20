@@ -1,8 +1,12 @@
 import { allProjects } from "./project.js"
 import { currentProjectId } from "./projectdom.js"
-export { createTaskObj, updateTaskObj, getTaskObjFromId, deleteTaskObj, checkTaskObj, taskId }
+export { createTaskObj, updateTaskObj, getTaskObjFromId, deleteTaskObj, checkTaskObj, setTaskId }
 
-let taskId = 1
+let taskId = null
+
+function setTaskId(id) {
+  taskId = id
+}
 
 const task = (title, desc, date, priority) => {  
   const id = taskId.toString()

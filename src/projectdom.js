@@ -1,5 +1,5 @@
-export { currentProjectId, currentProject, projectFormController, renderInbox, hideProjectForm }
-import { allProjects, createProjectObject } from "./project.js"
+export { currentProjectId, currentProject, projectFormController, renderInbox, hideProjectForm, renderSideBarProjectOnly }
+import { allProjects, createProjectObject, project } from "./project.js"
 import { taskManipulator, taskView } from "./taskdom.js"
 
 const projectForm = document.querySelector("#projForm")
