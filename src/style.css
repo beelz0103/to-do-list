@@ -1,14 +1,28 @@
-body {   
+:root {
+  --main-color: lightcoral;
+  --dark-gray: #e5e5e5;
+  --light-gray: #f8f8f8;
+}
+
+html {
+  font-family: sans-serif;
+}
+
+.fa-solid {
+  color: rgb(136, 132, 132);
+}
+
+body {
   height: 100vh;
   margin: 0;
   padding: 0;
-  display: grid;    
-  grid-template-columns: 250px 1fr; 
-  grid-template-rows: 80px 1fr 50px;  
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: 80px 1fr 50px;
 }
 
-#header{
-  background-color: lightblue;
+#header {
+  background-color: var(--main-color);
   grid-column: 1/-1;
 }
 
@@ -22,24 +36,19 @@ body {
 }
 
 #content-container {
-  background-color: lightgreen;
 }
 
 #taskFormContainer {
-  background-color: aquamarine;
 }
 
-#sidebar {  
+#sidebar {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  font-size: 20px;
-  padding-left: 30px;
+  font-size: 18px;
 }
 
-#content{
-  overflow:auto;
-  background-color: khaki;
+#content {
+  overflow: auto;
 }
 
 #footer {
@@ -48,10 +57,23 @@ body {
 }
 
 #project-container {
-  background-color: lightcoral;
+  padding: 0 20px;
   overflow: auto;
-  margin:10px;
-  height:300px;
+  margin: 10px;
+  height: 300px;
+}
+
+.projectItem {
+  cursor: pointer;
+  padding: 5px;
+  margin: 10px 0;
+  width: 90%;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.projectItem:hover {
+  background-color: #e1e1e1;
 }
 
 button {
@@ -74,12 +96,12 @@ button {
 #modal-formcontainer {
   display: flex;
   flex-direction: column;
-  gap:10px;
+  gap: 10px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #F6F7F8;
+  background-color: #f6f7f8;
   padding: 1rem 1.5rem;
   border-radius: 0.5rem;
 }
@@ -87,11 +109,11 @@ button {
 .show-modal {
   opacity: 1;
   visibility: visible;
-  transform: scale(1.0);
+  transform: scale(1);
   transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
 
-#book_closebutton {  
+#book_closebutton {
   cursor: pointer;
 }
 
@@ -103,10 +125,9 @@ button {
   font-weight: bold;
 }
 
-
 .speaker-form-header,
 .speaker-form {
-width: 300px;
+  width: 300px;
 }
 
 .form-row {
@@ -115,9 +136,10 @@ width: 300px;
   margin-bottom: 10px;
 }
 
-.form-row input[type='text'], .form-row input[type='number'] {
-  background-color: #FFFFFF;
-  border: 1px solid #D6D9DC;
+.form-row input[type="text"],
+.form-row input[type="number"] {
+  background-color: #ffffff;
+  border: 1px solid #d6d9dc;
   border-radius: 3px;
   width: 300;
   padding: 7px;
@@ -131,7 +153,7 @@ width: 300px;
 .book_checkbox {
   display: flex;
   align-self: center;
-  gap:10px;
+  gap: 10px;
 }
 
 .makeTaskGrayed {
@@ -150,11 +172,191 @@ width: 300px;
   height: 40px;
   font-size: 1rem;
   font-weight: bolder;
-  background-color: #4CAF50;
+
   border: 1px solid green;
-  border-radius: 10px;    
+  border-radius: 10px;
 }
 
 #book_createbook:hover {
-  box-shadow: 2px 2px #337735; 
+  box-shadow: 2px 2px #337735;
+}
+
+#sidebar {
+  padding: 35px 5px 35px 35px;
+  background-color: var(--light-gray);
+}
+
+#addNewProject {
+  text-align: left;
+  font-size: inherit;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  width: 85%;
+  padding: 0;
+  border-radius: 5px;
+  margin: 0;
+  padding: 5px;
+}
+#addNewProject:hover {
+  background-color: #e1e1e1;
+}
+
+.sidebarbuttons {
+  padding: 5px;
+  margin-bottom: 10px;
+  width: 85%;
+  border-radius: 5px;
+}
+
+.sidebarbuttons:hover {
+  background-color: #e1e1e1;
+}
+
+.projectsheader {
+  padding: 5px;
+  margin-bottom: 10px;
+  width: 85%;
+  border-radius: 5px;
+}
+
+.higlight {
+  background-color: #e1e1e1;
+}
+
+.projectItem {
+  display: flex;
+}
+
+.deleteButton > *,
+.editButtonForTask > *,
+.deleteButtonForTask > * {
+  pointer-events: none;
+}
+
+.projectItem {
+  display: grid;
+  grid-template-columns: 20px 1fr 20px;
+}
+
+.deleteButton,
+.editButtonForTask,
+.deleteButtonForTask {
+  width: fit-content;
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+#content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background-color: none;
+}
+
+#content-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0px 100px 0 100px;
+}
+
+.none {
+  background-color: gray;
+  width: 5px;
+  height: 100%;
+}
+
+.low {
+  background-color: green;
+  width: 5px;
+  height: 100%;
+}
+
+.medium {
+  background-color: yellow;
+  width: 5px;
+  height: 100%;
+}
+
+.high {
+  background-color: red;
+  width: 5px;
+  height: 100%;
+}
+
+.taskDiv {
+  display: flex;
+  height: 50px;
+  align-items: center;
+  background-color: var(--light-gray);
+}
+
+.taskDiv:hover {
+  transform: all 0.2s ease-out;
+}
+
+.checkbox {
+  margin: 5px;
+}
+
+.titleDiv {
+  flex: 1;
+  font-weight: bold;
+  color: #636060;
+}
+
+.dateDiv {
+  margin: 10px;
+}
+
+.editButtonForTask,
+.deleteButtonForTask {
+  margin: 10px;
+}
+
+.editButtonForTask:hover,
+.deleteButton:hover,
+.deleteButtonForTask:hover,
+.checkbox:hover {
+  transform: scale(1.1);
+}
+
+.fa-solid:hover {
+  fill: #3ba395;
+  color: #3ba395;
+}
+
+.checkbox {
+  cursor: pointer;
+}
+
+.dateDiv {
+  font-size: 80%;
+  color: #636060;
+}
+
+#taskFormContainer {
+  margin-top: 50px;
+}
+
+.hideElement {
+  display: none;
+}
+
+.showElement {
+  display: block;
+}
+
+.taskDiv {
+  opacity: 0.9;
+}
+
+.titleDivChecked {
+  text-decoration-line: line-through;
 }

@@ -1,67 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <div id="header"></div>  
-  <div id="sidebar">
-      <div>Inbox</div>
-      <div>Today</div>
-      <div>This Week</div>
-      <div>Projects</div>
-      <div id="projectFormContainer">
-      <button id="addNewProject">Add New Project</button>
-      <form id="projForm">
-        <input type="text" id="pr-title" value = "Project Test" required>
-        <button type="button" id="addProject">Add Project</button>  
-        <button type="button" id="closeProjForm">Close</button>  
-      </form>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/5030455afe.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>To-Do-List</title>
+  </head>
+  <body>
+    <div id="header"></div>
+    <div id="sidebar">
+      <div class="sidebarbuttons"><i class="fa-solid fa-inbox"></i> Inbox</div>
+      <div class="sidebarbuttons">
+        <i class="fa-solid fa-calendar-day"></i> Today
       </div>
-      <div id = "project-container"></div>          
-  </div> 
-  <div id="content-container" class="content">
-    <div id="taskFormContainer">
-      <button id="addNewTask">ADD NEW TASK</button>
-      <form id="taskForm">
-        <label for="task-title">Title</label>
-        <input type="text" id="task-title" value = "Project Test" required>
-
-        <label for="task-desc">Desc</label>
-        <input type="text" id="task-desc" value = "Project Test" required>
-
-        <label for="date">dATE:</label>
-        <input type="date" id="date" name="birthday" value = "2001-12-12">
-
-        <label for="task-priority">Choose a car:</label>
-        <select id="task-priority" name="priority">
-        <option value="low">Low</option>
-        <option value="medium" selected>Medium</option>
-        <option value="high">High</option>
-        </select>
-
-        <button type="button" id="add-Task">
-        <span>Add Task</span>
-        <i class="fa-solid fa-plus"></i>
+      <div class="sidebarbuttons">
+        <i class="fa-solid fa-calendar-week"></i> This Week
+      </div>
+      <div class="projectsheader" style="font-weight: bold">
+        <i class="fa-solid fa-circle"></i> Projects
+      </div>
+      <div id="projectFormContainer">
+        <button id="addNewProject">
+          <i class="fa-solid fa-plus"></i> Create New Project
         </button>
-
-        <button type="button" id="edit-Task">
-          <span>Edit Task</span>
-          <i class="fa-solid fa-plus"></i>
-        </button>
-
-        <button type="button" id="closeTaskForm">
-        <span>CLose Task</span>
-        <i class="fa-solid fa-plus"></i>
-        </button>
-      </form>
+        <div>
+          <form id="projForm" novalidate>
+            <input type="text" id="pr-title" value="Project Test" required />
+            <button id="addProject">Add Project</button>
+            <button type="button" id="closeProjForm">Close</button>
+          </form>
+          <div class="projecterror"></div>
+        </div>
+      </div>
+      <div id="project-container"></div>
     </div>
-    <div id="content"></div> 
-  </div>   
-  <div id="footer"></div>    
-  <script src="main.js"></script>
-</body>
+    <div id="content-container" class="content">
+      <div class="content-container-title"></div>
+      <!-- <div id="taskFormContainer">
+        <button id="addNewTask">ADD NEW TASK</button>
+        <form id="taskForm" novalidate>
+          <div>
+            <label for="task-title">Title</label>
+            <input type="text" id="task-title" value="Project Test" required />
+            <div id="titleerrdiv"></div>
+          </div>
+          <label for="date">dATE:</label>
+          <input
+            type="text"
+            id="date"
+            placeholder="Schedule"
+            value=""
+            onfocus="(this.type='date')"
+            onblur="(this.type='text')"
+          />
+
+          <label for="task-priority">Choose a prior:</label>
+          <select id="task-priority" name="priority">
+            <option value="none" selected>Choose priorirty</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+
+          <button type="submit" id="add-Task">
+            <span>Add Task</span>
+            <i class="fa-solid fa-plus"></i>
+          </button>
+
+          <button type="button" id="edit-Task">
+            <span>Edit Task</span>
+            <i class="fa-solid fa-plus"></i>
+          </button>
+
+          <button type="button" id="closeTaskForm">
+            <span>CLose Task</span>
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </form>
+      </div> -->
+      <div id="content"></div>
+      <div id="taskFormContainer">
+        <button id="addNewTask">ADD NEW TASK</button>
+        <form id="taskForm" novalidate>
+          <div>
+            <label for="task-title">Title</label>
+            <input type="text" id="task-title" value="Project Test" required />
+            <div id="titleerrdiv"></div>
+          </div>
+          <label for="date">dATE:</label>
+          <input
+            type="text"
+            id="date"
+            placeholder="Schedule"
+            value=""
+            onfocus="(this.type='date')"
+            onblur="(this.type='text')"
+          />
+
+          <label for="task-priority">Choose a prior:</label>
+          <select id="task-priority" name="priority">
+            <option value="none" selected>Choose priorirty</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+
+          <button type="submit" id="add-Task">
+            <span>Add Task</span>
+            <i class="fa-solid fa-plus"></i>
+          </button>
+
+          <button type="button" id="edit-Task">
+            <span>Edit Task</span>
+            <i class="fa-solid fa-plus"></i>
+          </button>
+
+          <button type="button" id="closeTaskForm">
+            <span>CLose Task</span>
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+    <div id="footer"></div>
+    <script src="main.js"></script>
+  </body>
 </html>

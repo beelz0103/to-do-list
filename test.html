@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style></style>
+  </head>
+  <body>
+    <button>Move Div</button>
+    <button id="a">Move Div Back</button>
+    <div class="up">UP</div>
+    <div class="down">Down</div>
+    <div>Three</div>
+    <div class="move">Moving Div</div>
+
+    <div></div>
+    <script>
+      const button = document.querySelector("button");
+      const button2 = document.querySelector("#a");
+      const up = document.querySelector(".up");
+      const down = document.querySelector(".down");
+      const moves = document.querySelector(".move");
+      button.addEventListener("click", moveDiv);
+      function moveDiv() {
+        insertAfter(moves, up);
+      }
+
+      button2.addEventListener("click", returnDivBack);
+      function returnDivBack() {
+        document.querySelector("body").appendChild(moves);
+      }
+
+      function insertAfter(newNode, referenceNode) {
+        referenceNode.parentNode.insertBefore(
+          newNode,
+          referenceNode.nextSibling
+        );
+      }
+    </script>
+  </body>
+</html>
