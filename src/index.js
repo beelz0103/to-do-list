@@ -1,8 +1,15 @@
 /// ///// notes
 /// 2. ADD 1WEEK CALENDARY ON SIDEBAR
 // 3 ADD DUE TODAY ON SIDEBARD
-// OR 7. GRAY OUT TASKS WHEN CLICK ON COMPLETED TASKS
+// FOCUS TILE  ON OPENING FORMS
 // change style
+// STYLE NOTES
+// chnage how form looks
+// Feature notes
+// Add sidebar hamburger
+// Add home button which leads to inbox
+// Make today and this week buttons works
+//
 
 import { taskManipulator } from "./taskdom";
 import {

@@ -18,32 +18,25 @@ body {
   padding: 0;
   display: grid;
   grid-template-columns: 300px 1fr;
-  grid-template-rows: 70px 1fr 40px;
+  grid-template-rows: 80px 1fr 50px;
 }
 
 #header {
-  color: white;
-  font-size: 2rem;
-  padding: 10px;
   background-color: var(--main-color);
   grid-column: 1/-1;
 }
 
 #footer {
-  display: flex;
-  background-color: #b7b7b7;
+  background-color: #86273c;
   grid-column: 1/-1;
-  font-size: 1.2rem;
-  font-weight: 500;
-  align-items: center;
-  justify-content: center;
 }
 
 #sidebar {
   display: flex;
   flex-direction: column;
   font-size: 18px;
-  padding: 20px 5px 10px 35px;
+  box-sizing: border-box;
+  padding: 35px;
   background-color: var(--light-gray);
 }
 
@@ -65,6 +58,73 @@ body {
 
 .projectItem:hover {
   background-color: #e1e1e1;
+}
+
+button {
+  width: 100px;
+}
+
+#formheader {
+  font-size: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.speaker-form-header,
+.speaker-form {
+  width: 300px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.form-row input[type="text"],
+.form-row input[type="number"] {
+  background-color: #ffffff;
+  border: 1px solid #d6d9dc;
+  border-radius: 3px;
+  width: 300;
+  padding: 7px;
+  font-size: 14px;
+}
+
+.form-row label {
+  margin-bottom: 5px;
+}
+
+.book_checkbox {
+  display: flex;
+  align-self: center;
+  gap: 10px;
+}
+
+.makeTaskGrayed {
+  background-color: lightgray;
+}
+
+#formbody {
+  display: flex;
+  flex-direction: column;
+}
+
+#create-task {
+  align-self: center;
+  margin: 5px;
+  width: 125px;
+  height: 40px;
+  font-size: 1rem;
+  font-weight: bolder;
+  border: 1px solid green;
+  border-radius: 10px;
+}
+
+#book_createbook:hover {
+  box-shadow: 2px 2px #337735;
 }
 
 #addNewProject {
@@ -135,6 +195,12 @@ body {
   outline: inherit;
 }
 
+#content-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0px 100px 0 100px;
+}
+
 .none {
   background-color: gray;
   width: 5px;
@@ -185,12 +251,15 @@ body {
   align-items: center;
   background-color: var(--light-gray);
 }
-
+#content {
+  background-color: none;
+  height: 300px;
+  overflow: auto;
+}
 .content-container-title {
   font-size: 1.8rem;
   font-weight: bold;
   text-decoration-line: underline;
-  text-align: center;
   color: #636060;
   margin-bottom: 5px;
 }
@@ -227,16 +296,4 @@ body {
 
 .showElement {
   display: block;
-}
-
-#content {
-  background-color: none;
-}
-
-#content-container {
-  display: flex;
-  flex-direction: column;
-  margin-left: 100px;
-  padding-right: 100px;
-  overflow: auto;
 }

@@ -30,9 +30,12 @@ const taskDOM = () => {
 
   function showTaskForm() {
     hideProjectForm();
+
     showElement(taskForm);
-    focusOnTitle();
+
     resetTaskForm();
+    focusOnTitle();
+
     hideElement(newTaskButton);
   }
 
@@ -139,7 +142,10 @@ const taskDOM = () => {
 
   function focusOnTitle() {
     const title = document.getElementById("task-title");
-    title.focus();
+    title.focus(); // sets focus to element
+    const val = title.value; // store the value of the element
+    title.value = ""; // clear the value of the element
+    title.value = val; // set that value back.
   }
 
   function hideTaskForm() {
