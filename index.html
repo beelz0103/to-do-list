@@ -14,10 +14,10 @@
     <div id="header">ToDoApp</div>
     <div id="sidebar">
       <div class="sidebarbuttons"><i class="fa-solid fa-inbox"></i> Inbox</div>
-      <div class="sidebarbuttons">
+      <div class="sidebarbuttons" id="today">
         <i class="fa-solid fa-calendar-day"></i> Today
       </div>
-      <div class="sidebarbuttons">
+      <div class="sidebarbuttons" id="thisWeek">
         <i class="fa-solid fa-calendar-week"></i> This Week
       </div>
       <div class="projectsheader" style="font-weight: bold">
@@ -30,8 +30,8 @@
         <div>
           <form id="projForm" novalidate>
             <input type="text" id="pr-title" value="Project Test" required />
-            <button id="addProject">Add Project</button>
-            <button type="button" id="closeProjForm">Close</button>
+            <button id="addProject">Add</button>
+            <button type="button" id="closeProjForm">Cancel</button>
           </form>
           <div class="projecterror"></div>
         </div>
@@ -40,54 +40,56 @@
     </div>
     <div id="content-container" class="content">
       <div class="content-container-title"></div>
-      <!-- <div id="taskFormContainer">
-        <button id="addNewTask">ADD NEW TASK</button>
-        <form id="taskForm" novalidate>
-          <div>
-            <label for="task-title">Title</label>
-            <input type="text" id="task-title" value="Project Test" required />
-            <div id="titleerrdiv"></div>
-          </div>
-          <label for="date">dATE:</label>
-          <input
-            type="text"
-            id="date"
-            placeholder="Schedule"
-            value=""
-            onfocus="(this.type='date')"
-            onblur="(this.type='text')"
-          />
-
-          <label for="task-priority">Choose a prior:</label>
-          <select id="task-priority" name="priority">
-            <option value="none" selected>Choose priorirty</option>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
-
-          <button type="submit" id="add-Task">
-            <span>Add Task</span>
-            <i class="fa-solid fa-plus"></i>
-          </button>
-
-          <button type="button" id="edit-Task">
-            <span>Edit Task</span>
-            <i class="fa-solid fa-plus"></i>
-          </button>
-
-          <button type="button" id="closeTaskForm">
-            <span>CLose Task</span>
-            <i class="fa-solid fa-plus"></i>
-          </button>
-        </form>
-      </div> -->
       <div id="content"></div>
       <div id="taskFormContainer">
-        <button id="addNewTask">ADD NEW TASK</button>
+        <button id="addNewTask">
+          New Task <i class="fa-solid fa-circle-plus"></i>
+        </button>
+        <form id="taskForm" novalidate>
+          <div class="taskFormDiv">
+            <div>
+              <input
+                type="text"
+                id="task-title"
+                placeholder="MyTask"
+                required
+                autofocus
+              />
+              <div id="titleerrdiv"></div>
+            </div>
+            <input type="date" id="date" value="" />
+            <select id="task-priority" name="priority">
+              <option value="none" selected>Choose priorirty</option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div id="formButtons">
+            <button type="submit" id="add-Task">Add</button>
+
+            <button type="button" id="edit-Task">Edit</button>
+
+            <button type="button" id="closeTaskForm">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="footer">Copyright © 2022 Tet</div>
+    <script src="main.js"></script>
+  </body>
+</html>
+
+<!-- <!DOCTYPE html>
+    <div id="content-container" class="content">
+      <div class="content-container-title"></div>
+      <div id="content"></div>
+      <div id="taskFormContainer">
+        <button id="addNewTask">
+          New Task <i class="fa-solid fa-circle-plus"></i>
+        </button>
         <form id="taskForm" novalidate>
           <div>
-            <label for="task-title">Title</label>
             <input
               type="text"
               id="task-title"
@@ -97,42 +99,23 @@
             />
             <div id="titleerrdiv"></div>
           </div>
-          <label for="date">dATE:</label>
-          <input
-            type="text"
-            id="date"
-            placeholder="Schedule"
-            value=""
-            onfocus="(this.type='date')"
-            onblur="(this.type='text')"
-          />
-
-          <label for="task-priority">Choose a prior:</label>
+          <input type="date" id="date" value="" />
           <select id="task-priority" name="priority">
             <option value="none" selected>Choose priorirty</option>
             <option value="low">Low</option>
             <option value="medium">Medium</option>
             <option value="high">High</option>
           </select>
+          <div id="formButtons">
+            <button type="submit" id="add-Task">
+              <span>Add</span>
+            </button>
 
-          <button type="submit" id="add-Task">
-            <span>Add Task</span>
-            <i class="fa-solid fa-plus"></i>
-          </button>
-
-          <button type="button" id="edit-Task">
-            <span>Edit Task</span>
-            <i class="fa-solid fa-plus"></i>
-          </button>
-
-          <button type="button" id="closeTaskForm">
-            <span>CLose Task</span>
-            <i class="fa-solid fa-plus"></i>
-          </button>
+            <button type="button" id="edit-Task">
+              <span>Edit</span>
+            </button>
+          </div>
         </form>
       </div>
     </div>
-    <div id="footer">Copyright © 2022 Tet</div>
-    <script src="main.js"></script>
-  </body>
-</html>
+</html> -->
