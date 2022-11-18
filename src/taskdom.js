@@ -1,3 +1,4 @@
+import { format, compareAsc, parseISO } from "date-fns";
 import {
   createTaskObj,
   updateTaskObj,
@@ -30,12 +31,9 @@ const taskDOM = () => {
 
   function showTaskForm() {
     hideProjectForm();
-
     showElement(taskForm);
-
     resetTaskForm();
     focusOnTitle();
-
     hideElement(newTaskButton);
   }
 
@@ -58,7 +56,8 @@ const taskDOM = () => {
     deleteTaskObj(taskId);
     taskManipulator.hideTaskForm();
     hideProjectForm();
-    e.target.parentNode.remove();
+    // e.target.parentNode.remove();
+    taskView.createNewTaskView(currentProject());
   }
 
   // update
@@ -107,9 +106,18 @@ const taskDOM = () => {
     const title = document.querySelector("#task-title");
     title.value = task.title;
     const date = document.querySelector("#date");
-    date.value = task.date;
+    console.log(task.date);
+    // console.log(format(parseISO(task.date), "yyyy-MM-dd"));
+    date.value = getCorrectTimeValue3(task.date);
     const priority = document.querySelector("#task-priority");
     priority.value = task.priority;
+  };
+
+  const getCorrectTimeValue3 = (date) => {
+    if (date == "") {
+      return "";
+    }
+    return format(date, "yyyy-MM-dd");
   };
 
   function editTask(e) {
@@ -135,9 +143,17 @@ const taskDOM = () => {
   // utility functions
   const getTaskValues = () => {
     const title = document.querySelector("#task-title").value;
-    const date = document.querySelector("#date").value;
+    const date = getDate(document.querySelector("#date"));
     const priority = document.querySelector("#task-priority").value;
     return { title, date, priority };
+  };
+
+  const getDate = (ele) => {
+    if (ele.value == "") {
+      return "";
+    }
+    const currentDate = new Date(`${ele.value}T00:00`);
+    return currentDate;
   };
 
   function focusOnTitle() {
@@ -170,6 +186,7 @@ const taskDOM = () => {
 
   const showElement = (elm) => {
     elm.style.display = "block";
+    console.log(elm, "shown");
   };
 
   return {
@@ -179,6 +196,8 @@ const taskDOM = () => {
     deleteTask,
     hideTaskForm,
     resetTaskForm,
+    hideElement,
+    newTaskButton,
   };
 };
 
@@ -203,10 +222,19 @@ const createTaskViewHelper = () => {
       return priorityDiv;
     };
 
+    const getCorrectTimeValue = (date) => {
+      if (date == "") {
+        return "";
+      }
+      return format(date, "yyyy-MM-dd");
+    };
+
     const createDateDiv = () => {
       const dateDiv = document.createElement("div");
       dateDiv.classList.add("dateDiv");
-      dateDiv.textContent = task.date;
+      const divsDate = task.date;
+      console.log(getCorrectTimeValue(divsDate));
+      dateDiv.textContent = getCorrectTimeValue(divsDate);
       return dateDiv;
     };
 
@@ -255,6 +283,12 @@ const createTaskViewHelper = () => {
     return taskDiv;
   };
 
+  // if (contProj.id === "TDAY" || contProj.id === "TWEEK") {
+  //   console.log("HEYYY");
+  //   console.log(taskManipulator.newTaskButton);
+  //   taskManipulator.hideElement(taskManipulator.newTaskButton);
+  // }
+
   const setUpTaskContainer = (proj) => {
     const taskMainContainer = document.querySelector("#content-container");
     const taskContainer = document.querySelector("#content");
@@ -265,9 +299,10 @@ const createTaskViewHelper = () => {
   };
 
   const createNewTaskView = (contProj) => {
+    console.log(contProj.id);
     const containetitle = document.querySelector(".content-container-title");
     containetitle.textContent = contProj.title;
-    console.log("new task view");
+    console.log("NEW TASK VIEW WAS CREATED");
     taskManipulator.hideTaskForm();
     const taskContainer = setUpTaskContainer(contProj);
     contProj.tasks.forEach((task) => {

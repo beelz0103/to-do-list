@@ -1,24 +1,21 @@
-/// ///// notes
-/// 2. ADD 1WEEK CALENDARY ON SIDEBAR
-// 3 ADD DUE TODAY ON SIDEBARD
-// FOCUS TILE  ON OPENING FORMS
-// change style
-// STYLE NOTES
-// chnage how form looks
+// Style Notes for future
+// Make responsive
+
 // Feature notes
 // Add sidebar hamburger
-// Add home button which leads to inbox
-// Make today and this week buttons works
-//
+
+import { format, compareAsc, parseISO } from "date-fns";
 
 import { taskManipulator } from "./taskdom";
 import {
   projectFormController,
   renderInbox,
+  renderThisWeek,
+  renderToday,
   renderSideBarProjectOnly,
 } from "./projectdom";
 import { allProjects, project, setPrjId } from "./project";
-import { setTaskId } from "./task";
+import { setTaskId, makeProjectArrayForToday } from "./task";
 import "./style.css";
 
 let taskId = 1;
@@ -32,18 +29,23 @@ function saveToDoList() {
 function loadToDoList() {
   const projects = JSON.parse(localStorage.getItem("projects"));
 
-  if (projects == null) {
+  if (projects === null) {
     setPrjId(prjId);
     setTaskId(taskId);
     const inbox = project("Inbox");
+
     allProjects.push(inbox);
+
     renderInbox();
+    renderToday();
+    renderThisWeek();
     renderSideBarProjectOnly();
 
     projectFormController();
     taskManipulator.taskFormController();
   } else {
     projects.forEach((val) => allProjects.push(val));
+    convertAllISOtoNormalDate(projects[0].tasks);
     prjId = parseInt(allProjects.at(-1).id) + 1;
     setPrjId(prjId);
     if (allProjects[0].tasks.at(-1) == undefined) {
@@ -57,6 +59,8 @@ function loadToDoList() {
     projectFormController();
     renderSideBarProjectOnly();
     renderInbox();
+    renderToday();
+    renderThisWeek();
     taskManipulator.taskFormController();
   }
 }
@@ -65,5 +69,13 @@ window.addEventListener("beforeunload", () => {
   saveToDoList();
   return null;
 });
+
+function convertAllISOtoNormalDate(taskArr) {
+  taskArr.forEach((value) => {
+    if (value.date !== "") {
+      value.date = parseISO(value.date);
+    }
+  });
+}
 
 loadToDoList();

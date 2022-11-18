@@ -11,7 +11,7 @@
   },
   "rules": {
     "radix": ["error", "as-needed"],
-    "no-console": "off",
+    "no-console": "error",
     "quotes": ["error", "double"],
     "eqeqeq": ["error", "always"]
   }

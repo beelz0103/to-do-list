@@ -1,3 +1,4 @@
+import { compareAsc, format } from "date-fns";
 import { allProjects } from "./project.js";
 import { currentProjectId } from "./projectdom.js";
 
@@ -8,6 +9,7 @@ export {
   deleteTaskObj,
   checkTaskObj,
   setTaskId,
+  makeProjectArrayForToday,
 };
 
 let taskId = null;
@@ -60,3 +62,5 @@ const addTaskObjToArray = (newTask) => {
     }
   });
 };
+
+const makeProjectArrayForToday = () => {};

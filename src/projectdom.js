@@ -3,6 +3,8 @@ import {
   createProjectObject,
   project,
   deleteProjectObj,
+  makeTodayProject,
+  makethisWeekProject,
 } from "./project.js";
 
 import { taskManipulator, taskView } from "./taskdom.js";
@@ -12,8 +14,10 @@ export {
   currentProject,
   projectFormController,
   renderInbox,
+  renderToday,
   hideProjectForm,
   renderSideBarProjectOnly,
+  renderThisWeek,
 };
 
 const projectForm = document.querySelector("#projForm");
@@ -34,11 +38,13 @@ function projectFormController() {
 function showProjectForm() {
   projectForm.style.display = "block";
   newProjectButton.style.display = "none";
+  taskManipulator.hideTaskForm();
 }
 
 function hideProjectForm() {
   projectForm.style.display = "none";
   newProjectButton.style.display = "block";
+  errDiv.textContent = "";
   projectForm.reset();
 }
 
@@ -66,10 +72,34 @@ const renderInbox = () => {
   inbx.id = "1";
   inbx.addEventListener("click", () => {
     addClassToOneDiv(inbx);
+    hideProjectForm();
     taskView.createNewTaskView(allProjects[0]);
   });
   addClassToOneDiv(inbx);
   taskView.createNewTaskView(allProjects[0]);
+};
+
+const renderToday = () => {
+  const today = document.querySelector("#today");
+  today.addEventListener("click", () => {
+    hideProjectForm();
+    console.log("TODAY WAS RENDERERD");
+    const todayPrj = makeTodayProject();
+    taskView.createNewTaskView(todayPrj);
+    addClassToOneDiv(today);
+  });
+};
+
+const renderThisWeek = () => {
+  const thisWeek = document.querySelector("#thisWeek");
+
+  thisWeek.addEventListener("click", () => {
+    hideProjectForm();
+    console.log("THIS WEEK WAS RENDERERD");
+    const thisWeekPrj = makethisWeekProject();
+    taskView.createNewTaskView(thisWeekPrj);
+    addClassToOneDiv(thisWeek);
+  });
 };
 
 function renderSideBarProjectOnly() {
@@ -95,6 +125,7 @@ function createProjectDiv(prj) {
   div.classList.add("projectItem");
   div.id = prj.id;
   div.addEventListener("click", () => {
+    hideProjectForm();
     addClassToOneDiv(div);
     taskView.createNewTaskView(prj);
   });
@@ -106,6 +137,16 @@ const currentProjectId = () => document.querySelector("#content").classList[0];
 
 const currentProject = () => {
   const projectId = currentProjectId();
+  console.log("PROJECT ID WAS GOTTTT");
+  console.log("projectid", projectId);
+  if (projectId === "TDAY") {
+    const projecttoreturn = makeTodayProject();
+    return projecttoreturn;
+  }
+  if (projectId === "TWEEK") {
+    const projecttoreturn = makethisWeekProject();
+    return projecttoreturn;
+  }
   return allProjects.filter((value) => value.id == projectId)[0];
 };
 
@@ -125,7 +166,6 @@ function deleteProject(e) {
   const inbx = document.querySelector("#sidebar div");
   e.stopPropagation();
   const projId = e.target.parentNode.id;
-  console.log(e.target);
   deleteProjectObj(projId);
 
   hideProjectForm();
@@ -145,13 +185,14 @@ const createDeleteButton = () => {
 
 function addClassToOneDiv(oneDiv) {
   const inbx = document.querySelector("#sidebar div");
-  console.log(inbx);
+  const today = document.querySelector("#today");
+  const thisWeek = document.querySelector("#thisWeek");
   const projectsItems = document.querySelectorAll("#project-container div");
-  console.log(projectsItems);
+
   inbx.classList.remove("higlight");
+  today.classList.remove("higlight");
+  thisWeek.classList.remove("higlight");
   projectsItems.forEach((value) => value.classList.remove("higlight"));
-  console.log(oneDiv);
-  console.log(inbx);
   oneDiv.classList.add("higlight");
 }
 

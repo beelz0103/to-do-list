@@ -1,5 +1,5 @@
 :root {
-  --main-color: lightcoral;
+  --main-color: #413e3e;
   --dark-gray: #e5e5e5;
   --light-gray: #f8f8f8;
 }
@@ -51,7 +51,7 @@ body {
   padding: 0 20px;
   overflow: auto;
   margin: 10px;
-  height: 300px;
+  height: 280px;
 }
 
 .projectItem {
@@ -239,4 +239,147 @@ body {
   margin-left: 100px;
   padding-right: 100px;
   overflow: auto;
+}
+
+input#pr-title {
+  background-color: #ffffff;
+  width: 200px;
+  height: 20px;
+  border: 2px solid lightgray;
+  border-radius: 5px;
+  color: black;
+  box-shadow: none; /* Remove default red glow in Firefox */
+}
+
+#addProject,
+#closeProjForm {
+  width: 100px;
+  background: none;
+  color: inherit;
+  padding: 0;
+  font-size: 0.8rem;
+  background-color: #636060;
+  border: 1px solid black;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  padding: 1px 3px 1px 3px;
+  outline: inherit;
+}
+#addProject:hover,
+#closeProjForm:hover {
+  transform: scale(1.02);
+}
+
+.projecterror {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: black;
+}
+
+#addNewTask {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  height: 30px;
+  cursor: pointer;
+
+  width: 120px;
+  background: none;
+  color: inherit;
+
+  font-size: 0.9rem;
+  background-color: #636060;
+  border: 1px solid black;
+
+  color: white;
+  font-weight: bold;
+  outline: inherit;
+  margin-left: 8px;
+}
+
+#addNewTask > .fa-solid {
+  color: white;
+}
+
+#addNewTask:hover {
+  transform: scale(1.01);
+}
+
+#add-Task,
+#edit-Task,
+#closeTaskForm {
+  width: 60px;
+  background: none;
+  color: inherit;
+  padding: 0;
+  font-size: 0.8rem;
+  background-color: #636060;
+  border: 1px solid black;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  padding: 1px 3px 1px 3px;
+  outline: inherit;
+  height: 20px;
+  width: ;
+}
+
+#addProject:hover,
+#closeProjForm:hover {
+  transform: scale(1.02);
+}
+
+#formButtons {
+  width: 100%;
+  display: flex;
+  gap: 5px;
+  padding: 5px 0 5px 0;
+  justify-content: flex-end;
+}
+
+#formButtons > button:hover {
+  transform: scale(1.03);
+}
+
+.taskFormDiv {
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.taskFormDiv > input {
+  margin: 5px;
+}
+
+.taskFormDiv > div > input {
+  margin: 5px;
+}
+
+#task-title {
+  border: none;
+  width: 100%;
+}
+
+#task-title:focus {
+  outline: none;
+}
+
+#date,
+#task-priority {
+  border: none;
+}
+
+#date:focus,
+#task-priority:focus {
+  outline: none;
+}
+
+#task-priority {
+  background: none;
+}
+
+#taskForm {
+  padding: 0 8px 0 8px;
 }
