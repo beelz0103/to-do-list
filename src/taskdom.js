@@ -31,6 +31,8 @@ const taskDOM = () => {
     resetTaskForm();
     focusOnTitle();
     hideElement(newTaskButton);
+    disableButton(addTaskButton);
+    enableButton(editTaskButton);
   }
 
   function addTask(e) {
@@ -84,6 +86,7 @@ const taskDOM = () => {
     showElement(taskForm);
     focusOnTitle();
     setUpEditForm(taskId);
+    enableButton(editTaskButton);
   };
 
   function titleValid() {
@@ -102,6 +105,11 @@ const taskDOM = () => {
 
   const title = document.querySelector("#task-title");
   title.addEventListener("input", titleValid);
+  title.addEventListener("focus", () => {
+    const title = document.querySelector("#task-title");
+    console.log(title.value);
+    if (title.value !== "") enableButton(editTaskButton);
+  });
 
   function setUpEditForm(id) {
     editTaskButton.className = id;
