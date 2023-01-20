@@ -1,14 +1,12 @@
-import { format, compareAsc, parseISO } from "date-fns";
+import { format } from "date-fns";
 import {
   createTaskObj,
   updateTaskObj,
   getTaskObjFromId,
   deleteTaskObj,
   checkTaskObj,
-} from "./task.js";
-import { currentProject, hideProjectForm } from "./projectdom.js";
-
-export { taskManipulator, taskView };
+} from "./task";
+import { currentProject, hideProjectForm } from "./projectdom";
 
 const taskDOM = () => {
   const taskFormContainer = document.querySelector("#taskFormContainer");
@@ -19,7 +17,6 @@ const taskDOM = () => {
   const hideTaskFormButton = document.querySelector("#closeTaskForm");
 
   function taskFormController() {
-    // RENAME THIS TO projectFormController or something later
     hideTaskForm();
     newTaskButton.addEventListener("click", showTaskForm);
     addTaskButton.addEventListener("click", addTask);
@@ -28,7 +25,6 @@ const taskDOM = () => {
   }
 
   // create
-
   function showTaskForm() {
     hideProjectForm();
     showElement(taskForm);
@@ -37,11 +33,9 @@ const taskDOM = () => {
     hideElement(newTaskButton);
   }
 
-  function addTask(e) {
-    if (submitFunction(e)) {
-      createTask();
-      hideTaskForm();
-    }
+  function addTask() {
+    createTask();
+    hideTaskForm();
   }
 
   function createTask() {
@@ -81,18 +75,32 @@ const taskDOM = () => {
 
   const showEditForm = (e) => {
     resetTaskForm();
-
     hideProjectForm();
     const taskId = e.target.id;
-    console.log(typeof taskId);
     const elementthis = e.target.parentNode;
-    console.log(elementthis);
     moveEditFormToBelowElement(elementthis);
     elementthis.classList.add("hideElement");
     showElement(taskForm);
     focusOnTitle();
     setUpEditForm(taskId);
   };
+
+  function checkValidTitle() {
+    const title = document.querySelector("#task-title");
+    if (title.validity.valueMissing) {
+      disableButton(addTaskButton);
+      disableButton(editTaskButton);
+    } else if (title.value.length > 15) {
+      disableButton(addTaskButton);
+      disableButton(editTaskButton);
+    } else {
+      enableButton(addTaskButton);
+      enableButton(editTaskButton);
+    }
+  }
+
+  const title = document.querySelector("#task-title");
+  title.addEventListener("input", checkValidTitle);
 
   function setUpEditForm(id) {
     editTaskButton.className = id;
@@ -102,12 +110,18 @@ const taskDOM = () => {
     showElement(editTaskButton);
   }
 
+  function enableButton(button) {
+    button.disabled = false;
+  }
+
+  function disableButton(button) {
+    button.disabled = true;
+  }
+
   const updateEditFormValues = (task) => {
     const title = document.querySelector("#task-title");
     title.value = task.title;
     const date = document.querySelector("#date");
-    console.log(task.date);
-    // console.log(format(parseISO(task.date), "yyyy-MM-dd"));
     date.value = getCorrectTimeValue3(task.date);
     const priority = document.querySelector("#task-priority");
     priority.value = task.priority;
@@ -120,15 +134,13 @@ const taskDOM = () => {
     return format(date, "yyyy-MM-dd");
   };
 
-  function editTask(e) {
-    if (submitFunction(e)) {
-      const taskId = editTaskButton.className;
-      const task = getTaskObjFromId(taskId);
-      const taskValues = getTaskValues();
-      updateTaskObj(task, taskValues);
-      hideTaskForm();
-      taskView.createNewTaskView(currentProject());
-    }
+  function editTask() {
+    const taskId = editTaskButton.className;
+    const task = getTaskObjFromId(taskId);
+    const taskValues = getTaskValues();
+    updateTaskObj(task, taskValues);
+    hideTaskForm();
+    taskView.createNewTaskView(currentProject());
   }
 
   function checkTask(e) {
@@ -136,7 +148,6 @@ const taskDOM = () => {
     checkTaskObj(taskId);
     taskManipulator.hideTaskForm();
     hideProjectForm();
-
     e.target.nextSibling.classList.toggle("titleDivChecked");
   }
 
@@ -149,7 +160,7 @@ const taskDOM = () => {
   };
 
   const getDate = (ele) => {
-    if (ele.value == "") {
+    if (ele.value === "") {
       return "";
     }
     const currentDate = new Date(`${ele.value}T00:00`);
@@ -181,12 +192,10 @@ const taskDOM = () => {
 
   const hideElement = (elm) => {
     elm.style.display = "none";
-    console.log(elm, "hidden");
   };
 
   const showElement = (elm) => {
     elm.style.display = "block";
-    console.log(elm, "shown");
   };
 
   return {
@@ -233,7 +242,7 @@ const createTaskViewHelper = () => {
       const dateDiv = document.createElement("div");
       dateDiv.classList.add("dateDiv");
       const divsDate = task.date;
-      console.log(getCorrectTimeValue(divsDate));
+
       dateDiv.textContent = getCorrectTimeValue(divsDate);
       return dateDiv;
     };
@@ -283,12 +292,6 @@ const createTaskViewHelper = () => {
     return taskDiv;
   };
 
-  // if (contProj.id === "TDAY" || contProj.id === "TWEEK") {
-  //   console.log("HEYYY");
-  //   console.log(taskManipulator.newTaskButton);
-  //   taskManipulator.hideElement(taskManipulator.newTaskButton);
-  // }
-
   const setUpTaskContainer = (proj) => {
     const taskMainContainer = document.querySelector("#content-container");
     const taskContainer = document.querySelector("#content");
@@ -299,10 +302,8 @@ const createTaskViewHelper = () => {
   };
 
   const createNewTaskView = (contProj) => {
-    console.log(contProj.id);
     const containetitle = document.querySelector(".content-container-title");
     containetitle.textContent = contProj.title;
-    console.log("NEW TASK VIEW WAS CREATED");
     taskManipulator.hideTaskForm();
     const taskContainer = setUpTaskContainer(contProj);
     contProj.tasks.forEach((task) => {
@@ -317,34 +318,10 @@ const createTaskViewHelper = () => {
 const taskManipulator = taskDOM();
 const taskView = createTaskViewHelper();
 
-function submitFunction(event) {
-  event.preventDefault();
-  const title = document.querySelector("#task-title");
-
-  const titleTrue = submitFunctionTitle();
-
-  if (!titleTrue) {
-    title.focus();
-  } else {
-    return true;
-  }
-}
-
-function submitFunctionTitle() {
-  const title = document.querySelector("#task-title");
-  const titleErr = document.querySelector("#titleerrdiv");
-  if (title.validity.valueMissing) {
-    titleErr.textContent = "Cant be empty";
-  } else if (title.value.length > 15) {
-    titleErr.textContent = "Email should be only 15 characters";
-  } else {
-    titleErr.textContent = "";
-    return true;
-  }
-}
-
 function createFontAwesomeIcon(classOne, classTwo) {
   const italic = document.createElement("I");
   italic.classList.add(classOne, classTwo);
   return italic;
 }
+
+export { taskManipulator, taskView };

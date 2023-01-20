@@ -1,16 +1,5 @@
-import { compareAsc, format } from "date-fns";
 import { allProjects } from "./project.js";
 import { currentProjectId } from "./projectdom.js";
-
-export {
-  createTaskObj,
-  updateTaskObj,
-  getTaskObjFromId,
-  deleteTaskObj,
-  checkTaskObj,
-  setTaskId,
-  makeProjectArrayForToday,
-};
 
 let taskId = null;
 
@@ -40,22 +29,22 @@ const updateTaskObj = (task, taskValues) => {
 };
 
 const getTaskObjFromId = (taskId) =>
-  allProjects[0].tasks.filter((task) => task.id == taskId).at(0);
+  allProjects[0].tasks.filter((task) => task.id === taskId).at(0);
 
 function deleteTaskObj(taskId) {
   allProjects.forEach((project) => {
-    project.tasks = project.tasks.filter((task) => task.id != taskId);
+    project.tasks = project.tasks.filter((task) => task.id !== taskId);
   });
 }
 
 function checkTaskObj(taskId) {
-  const task = allProjects[0].tasks.filter((task) => task.id == taskId).at(0);
+  const task = allProjects[0].tasks.filter((task) => task.id === taskId).at(0);
   task.completed = !task.completed;
 }
 
 const addTaskObjToArray = (newTask) => {
   allProjects.forEach((value) => {
-    if (value.id == "1" && value.title == "Inbox") {
+    if (value.id === "1" && value.title === "Inbox") {
       value.tasks.push(newTask);
     } else if (value.id === currentProjectId()) {
       value.tasks.push(newTask);
@@ -64,3 +53,13 @@ const addTaskObjToArray = (newTask) => {
 };
 
 const makeProjectArrayForToday = () => {};
+
+export {
+  createTaskObj,
+  updateTaskObj,
+  getTaskObjFromId,
+  deleteTaskObj,
+  checkTaskObj,
+  setTaskId,
+  makeProjectArrayForToday,
+};

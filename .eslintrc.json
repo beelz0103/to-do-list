@@ -13,6 +13,7 @@
     "radix": ["error", "as-needed"],
     "no-console": "error",
     "quotes": ["error", "double"],
-    "eqeqeq": ["error", "always"]
+    "eqeqeq": ["error", "always"],
+    "import/no-cycle": ["off"]
   }
 }

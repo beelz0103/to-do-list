@@ -266,12 +266,9 @@ input#pr-title {
   padding: 1px 3px 1px 3px;
   outline: inherit;
 }
-#addProject:hover,
-#closeProjForm:hover {
-  transform: scale(1.02);
-}
 
-.projecterror {
+.projecterror,
+#titleerrdiv {
   font-size: 0.9rem;
   font-weight: bold;
   color: black;
@@ -307,6 +304,11 @@ input#pr-title {
   transform: scale(1.01);
 }
 
+#add-Task:disabled,
+#edit-Task:disabled {
+  opacity: 0.5;
+}
+
 #add-Task,
 #edit-Task,
 #closeTaskForm {
@@ -326,11 +328,6 @@ input#pr-title {
   width: ;
 }
 
-#addProject:hover,
-#closeProjForm:hover {
-  transform: scale(1.02);
-}
-
 #formButtons {
   width: 100%;
   display: flex;
@@ -339,8 +336,12 @@ input#pr-title {
   justify-content: flex-end;
 }
 
-#formButtons > button:hover {
+#formButtons > button:hover:enabled {
   transform: scale(1.03);
+}
+
+#formButtons > button:hover:disabled {
+  cursor: default;
 }
 
 .taskFormDiv {
@@ -382,4 +383,17 @@ input#pr-title {
 
 #taskForm {
   padding: 0 8px 0 8px;
+}
+
+#addProject:hover:enabled,
+#closeProjForm:hover {
+  transform: scale(1.02);
+}
+
+#addProject:hover:disabled {
+  cursor: default;
+}
+
+#addProject:disabled {
+  opacity: 0.5;
 }

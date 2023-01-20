@@ -1,24 +1,12 @@
 import {
   allProjects,
   createProjectObject,
-  project,
   deleteProjectObj,
   makeTodayProject,
   makethisWeekProject,
-} from "./project.js";
+} from "./project";
 
-import { taskManipulator, taskView } from "./taskdom.js";
-
-export {
-  currentProjectId,
-  currentProject,
-  projectFormController,
-  renderInbox,
-  renderToday,
-  hideProjectForm,
-  renderSideBarProjectOnly,
-  renderThisWeek,
-};
+import { taskManipulator, taskView } from "./taskdom";
 
 const projectForm = document.querySelector("#projForm");
 const newProjectButton = document.querySelector("#addNewProject");
@@ -27,8 +15,19 @@ const hideProjectFormButton = document.querySelector("#closeProjForm");
 const titleInput = document.querySelector("#pr-title");
 const errDiv = document.querySelector(".projecterror");
 
+titleInput.addEventListener("input", checkValidTitle);
+
+function checkValidTitle() {
+  if (titleInput.validity.valueMissing) {
+    addProjectButton.disabled = true;
+  } else if (titleInput.value.length > 15) {
+    addProjectButton.disabled = true;
+  } else {
+    addProjectButton.disabled = false;
+  }
+}
+
 function projectFormController() {
-  // RENAME THIS TO projectFormController or something later
   hideProjectForm();
   newProjectButton.addEventListener("click", showProjectForm);
   addProjectButton.addEventListener("click", addProject);
@@ -38,6 +37,7 @@ function projectFormController() {
 function showProjectForm() {
   projectForm.style.display = "block";
   newProjectButton.style.display = "none";
+  document.querySelector("#pr-title").focus();
   taskManipulator.hideTaskForm();
 }
 
@@ -48,11 +48,9 @@ function hideProjectForm() {
   projectForm.reset();
 }
 
-function addProject(e) {
-  if (submitFunction(e, titleInput, errDiv)) {
-    createProject();
-    hideProjectForm();
-  }
+function addProject() {
+  createProject();
+  hideProjectForm();
 }
 
 const getProjectValues = () => {
@@ -83,7 +81,6 @@ const renderToday = () => {
   const today = document.querySelector("#today");
   today.addEventListener("click", () => {
     hideProjectForm();
-    console.log("TODAY WAS RENDERERD");
     const todayPrj = makeTodayProject();
     taskView.createNewTaskView(todayPrj);
     addClassToOneDiv(today);
@@ -95,7 +92,6 @@ const renderThisWeek = () => {
 
   thisWeek.addEventListener("click", () => {
     hideProjectForm();
-    console.log("THIS WEEK WAS RENDERERD");
     const thisWeekPrj = makethisWeekProject();
     taskView.createNewTaskView(thisWeekPrj);
     addClassToOneDiv(thisWeek);
@@ -137,8 +133,6 @@ const currentProjectId = () => document.querySelector("#content").classList[0];
 
 const currentProject = () => {
   const projectId = currentProjectId();
-  console.log("PROJECT ID WAS GOTTTT");
-  console.log("projectid", projectId);
   if (projectId === "TDAY") {
     const projecttoreturn = makeTodayProject();
     return projecttoreturn;
@@ -196,22 +190,13 @@ function addClassToOneDiv(oneDiv) {
   oneDiv.classList.add("higlight");
 }
 
-function submitFunction(event, element, div) {
-  if (element.validity.valueMissing) {
-    div.textContent = "Cant be empty";
-    element.focus();
-    event.preventDefault();
-  } else if (element.value.length > 15) {
-    div.textContent = "Email should be only 15 characters";
-    element.focus();
-    event.preventDefault();
-  } else {
-    div.textContent = "";
-    event.preventDefault();
-    return true;
-  }
-}
-
-function insertAfter(newNode, referenceNode) {
-  referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
-}
+export {
+  currentProjectId,
+  currentProject,
+  projectFormController,
+  renderInbox,
+  renderToday,
+  hideProjectForm,
+  renderSideBarProjectOnly,
+  renderThisWeek,
+};

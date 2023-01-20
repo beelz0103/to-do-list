@@ -4,8 +4,7 @@
 // Feature notes
 // Add sidebar hamburger
 
-import { format, compareAsc, parseISO } from "date-fns";
-
+import { parseISO } from "date-fns";
 import { taskManipulator } from "./taskdom";
 import {
   projectFormController,
@@ -15,11 +14,17 @@ import {
   renderSideBarProjectOnly,
 } from "./projectdom";
 import { allProjects, project, setPrjId } from "./project";
-import { setTaskId, makeProjectArrayForToday } from "./task";
+import { setTaskId } from "./task";
 import "./style.css";
 
 let taskId = 1;
 let prjId = 1;
+
+function ISOtoLocal(taskArr) {
+  taskArr.forEach((task) => {
+    if (task.date !== "") task.date = parseISO(task.date);
+  });
+}
 
 function saveToDoList() {
   localStorage.clear();
@@ -33,22 +38,19 @@ function loadToDoList() {
     setPrjId(prjId);
     setTaskId(taskId);
     const inbox = project("Inbox");
-
     allProjects.push(inbox);
-
     renderInbox();
     renderToday();
     renderThisWeek();
     renderSideBarProjectOnly();
-
     projectFormController();
     taskManipulator.taskFormController();
   } else {
     projects.forEach((val) => allProjects.push(val));
-    convertAllISOtoNormalDate(projects[0].tasks);
+    ISOtoLocal(projects[0].tasks);
     prjId = parseInt(allProjects.at(-1).id) + 1;
     setPrjId(prjId);
-    if (allProjects[0].tasks.at(-1) == undefined) {
+    if (allProjects[0].tasks.at(-1) === undefined) {
       taskId = 1;
       setTaskId(taskId);
     } else {
@@ -69,13 +71,5 @@ window.addEventListener("beforeunload", () => {
   saveToDoList();
   return null;
 });
-
-function convertAllISOtoNormalDate(taskArr) {
-  taskArr.forEach((value) => {
-    if (value.date !== "") {
-      value.date = parseISO(value.date);
-    }
-  });
-}
 
 loadToDoList();
