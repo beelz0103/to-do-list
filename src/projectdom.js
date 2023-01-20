@@ -2,8 +2,8 @@ import {
   allProjects,
   createProjectObject,
   deleteProjectObj,
-  makeTodayProject,
-  makethisWeekProject,
+  Today,
+  Week,
 } from "./project";
 
 import { taskManipulator, taskView } from "./taskdom";
@@ -15,9 +15,7 @@ const hideProjectFormButton = document.querySelector("#closeProjForm");
 const titleInput = document.querySelector("#pr-title");
 const errDiv = document.querySelector(".projecterror");
 
-titleInput.addEventListener("input", checkValidTitle);
-
-function checkValidTitle() {
+function titleValid() {
   if (titleInput.validity.valueMissing) {
     addProjectButton.disabled = true;
   } else if (titleInput.value.length > 15) {
@@ -26,6 +24,8 @@ function checkValidTitle() {
     addProjectButton.disabled = false;
   }
 }
+
+titleInput.addEventListener("input", titleValid);
 
 function projectFormController() {
   hideProjectForm();
@@ -48,7 +48,8 @@ function hideProjectForm() {
   projectForm.reset();
 }
 
-function addProject() {
+function addProject(e) {
+  e.preventDefault();
   createProject();
   hideProjectForm();
 }
@@ -69,11 +70,11 @@ const renderInbox = () => {
   const inbx = document.querySelector("#sidebar div");
   inbx.id = "1";
   inbx.addEventListener("click", () => {
-    addClassToOneDiv(inbx);
+    higlightProjectDiv(inbx);
     hideProjectForm();
     taskView.createNewTaskView(allProjects[0]);
   });
-  addClassToOneDiv(inbx);
+  higlightProjectDiv(inbx);
   taskView.createNewTaskView(allProjects[0]);
 };
 
@@ -81,20 +82,19 @@ const renderToday = () => {
   const today = document.querySelector("#today");
   today.addEventListener("click", () => {
     hideProjectForm();
-    const todayPrj = makeTodayProject();
+    const todayPrj = Today();
     taskView.createNewTaskView(todayPrj);
-    addClassToOneDiv(today);
+    higlightProjectDiv(today);
   });
 };
 
 const renderThisWeek = () => {
   const thisWeek = document.querySelector("#thisWeek");
-
   thisWeek.addEventListener("click", () => {
     hideProjectForm();
-    const thisWeekPrj = makethisWeekProject();
+    const thisWeekPrj = Week();
     taskView.createNewTaskView(thisWeekPrj);
-    addClassToOneDiv(thisWeek);
+    higlightProjectDiv(thisWeek);
   });
 };
 
@@ -122,10 +122,10 @@ function createProjectDiv(prj) {
   div.id = prj.id;
   div.addEventListener("click", () => {
     hideProjectForm();
-    addClassToOneDiv(div);
+    higlightProjectDiv(div);
     taskView.createNewTaskView(prj);
   });
-  addClassToOneDiv(div);
+  higlightProjectDiv(div);
   return div;
 }
 
@@ -134,14 +134,14 @@ const currentProjectId = () => document.querySelector("#content").classList[0];
 const currentProject = () => {
   const projectId = currentProjectId();
   if (projectId === "TDAY") {
-    const projecttoreturn = makeTodayProject();
+    const projecttoreturn = Today();
     return projecttoreturn;
   }
   if (projectId === "TWEEK") {
-    const projecttoreturn = makethisWeekProject();
+    const projecttoreturn = Week();
     return projecttoreturn;
   }
-  return allProjects.filter((value) => value.id == projectId)[0];
+  return allProjects.filter((value) => value.id === projectId)[0];
 };
 
 function createFontAwesomeIcon(classOne, classTwo) {
@@ -161,10 +161,9 @@ function deleteProject(e) {
   e.stopPropagation();
   const projId = e.target.parentNode.id;
   deleteProjectObj(projId);
-
   hideProjectForm();
   e.target.parentNode.remove();
-  addClassToOneDiv(inbx);
+  higlightProjectDiv(inbx);
   taskView.createNewTaskView(allProjects[0]);
 }
 
@@ -177,17 +176,20 @@ const createDeleteButton = () => {
   return deleteBtn;
 };
 
-function addClassToOneDiv(oneDiv) {
+function clearAllProjectDivHighlight() {
   const inbx = document.querySelector("#sidebar div");
   const today = document.querySelector("#today");
   const thisWeek = document.querySelector("#thisWeek");
   const projectsItems = document.querySelectorAll("#project-container div");
-
   inbx.classList.remove("higlight");
   today.classList.remove("higlight");
   thisWeek.classList.remove("higlight");
   projectsItems.forEach((value) => value.classList.remove("higlight"));
-  oneDiv.classList.add("higlight");
+}
+
+function higlightProjectDiv(projectDiv) {
+  clearAllProjectDivHighlight();
+  projectDiv.classList.add("higlight");
 }
 
 export {

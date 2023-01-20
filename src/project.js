@@ -1,13 +1,13 @@
 import { isToday, isThisWeek } from "date-fns";
-import { deleteTaskObj } from "./task.js";
+import { deleteTaskObj } from "./task";
 
 let prjId = null;
 
-function setPrjId(pid) {
-  prjId = pid;
+function setPrjId(id) {
+  prjId = id;
 }
 
-let allProjects = [];
+const allProjects = [];
 
 const project = (title) => {
   const id = prjId.toString();
@@ -23,22 +23,19 @@ const createProjectObject = (projectValues) => {
 };
 
 function deleteProjectObj(projId) {
-  const proj = getProjObjFromId(projId);
+  const proj = allProjects.find((prj) => prj.id === projId);
   proj.tasks.forEach((task) => deleteTaskObj(task.id));
-  allProjects = allProjects.filter((proj) => proj.id !== projId);
+  allProjects.splice(allProjects.indexOf(proj), 1);
 }
 
-const getProjObjFromId = (projId) =>
-  allProjects.filter((project) => project.id === projId)[0];
-
-const makeTodayProject = () => {
+const Today = () => {
   const todayObj = { title: "today", id: "TDAY", tasks: [] };
   todayObj.tasks = allProjects[0].tasks.filter((task) => task.date !== "");
   todayObj.tasks = todayObj.tasks.filter((task) => isToday(task.date));
   return todayObj;
 };
 
-const makethisWeekProject = () => {
+const Week = () => {
   const thisWeekObj = { title: "thisWeek", id: "TWEEK", tasks: [] };
   thisWeekObj.tasks = allProjects[0].tasks.filter((task) => task.date !== "");
   thisWeekObj.tasks = thisWeekObj.tasks.filter((task) => isThisWeek(task.date));
@@ -47,11 +44,10 @@ const makethisWeekProject = () => {
 
 export {
   allProjects,
-  prjId,
   project,
   setPrjId,
   deleteProjectObj,
-  makeTodayProject,
-  makethisWeekProject,
+  Today,
+  Week,
   createProjectObject,
 };

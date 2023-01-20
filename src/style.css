@@ -341,7 +341,7 @@ input#pr-title {
 }
 
 #formButtons > button:hover:disabled {
-  cursor: default;
+  cursor: not-allowed;
 }
 
 .taskFormDiv {
@@ -391,7 +391,7 @@ input#pr-title {
 }
 
 #addProject:hover:disabled {
-  cursor: default;
+  cursor: not-allowed;
 }
 
 #addProject:disabled {

@@ -33,9 +33,10 @@ const taskDOM = () => {
     hideElement(newTaskButton);
   }
 
-  function addTask() {
+  function addTask(e) {
     createTask();
     hideTaskForm();
+    e.preventDefault();
   }
 
   function createTask() {
@@ -85,7 +86,7 @@ const taskDOM = () => {
     setUpEditForm(taskId);
   };
 
-  function checkValidTitle() {
+  function titleValid() {
     const title = document.querySelector("#task-title");
     if (title.validity.valueMissing) {
       disableButton(addTaskButton);
@@ -100,7 +101,7 @@ const taskDOM = () => {
   }
 
   const title = document.querySelector("#task-title");
-  title.addEventListener("input", checkValidTitle);
+  title.addEventListener("input", titleValid);
 
   function setUpEditForm(id) {
     editTaskButton.className = id;

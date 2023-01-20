@@ -1,5 +1,5 @@
-import { allProjects } from "./project.js";
-import { currentProjectId } from "./projectdom.js";
+import { allProjects } from "./project";
+import { currentProjectId } from "./projectdom";
 
 let taskId = null;
 
@@ -52,8 +52,6 @@ const addTaskObjToArray = (newTask) => {
   });
 };
 
-const makeProjectArrayForToday = () => {};
-
 export {
   createTaskObj,
   updateTaskObj,
@@ -61,5 +59,4 @@ export {
   deleteTaskObj,
   checkTaskObj,
   setTaskId,
-  makeProjectArrayForToday,
 };
