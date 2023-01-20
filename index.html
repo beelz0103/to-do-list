@@ -29,8 +29,8 @@
         </button>
         <div>
           <form id="projForm" novalidate>
-            <input type="text" id="pr-title" value="Project Test" required />
-            <button id="addProject">Add</button>
+            <input type="text" id="pr-title" required />
+            <button id="addProject" disabled>Add</button>
             <button type="button" id="closeProjForm">Cancel</button>
           </form>
           <div class="projecterror"></div>
@@ -53,7 +53,6 @@
                 id="task-title"
                 placeholder="MyTask"
                 required
-                autofocus
               />
               <div id="titleerrdiv"></div>
             </div>
@@ -66,10 +65,8 @@
             </select>
           </div>
           <div id="formButtons">
-            <button type="submit" id="add-Task">Add</button>
-
+            <button type="submit" id="add-Task" disabled>Add</button>
             <button type="button" id="edit-Task">Edit</button>
-
             <button type="button" id="closeTaskForm">Cancel</button>
           </div>
         </form>
@@ -79,43 +76,3 @@
     <script src="main.js"></script>
   </body>
 </html>
-
-<!-- <!DOCTYPE html>
-    <div id="content-container" class="content">
-      <div class="content-container-title"></div>
-      <div id="content"></div>
-      <div id="taskFormContainer">
-        <button id="addNewTask">
-          New Task <i class="fa-solid fa-circle-plus"></i>
-        </button>
-        <form id="taskForm" novalidate>
-          <div>
-            <input
-              type="text"
-              id="task-title"
-              value="Project Test"
-              required
-              autofocus
-            />
-            <div id="titleerrdiv"></div>
-          </div>
-          <input type="date" id="date" value="" />
-          <select id="task-priority" name="priority">
-            <option value="none" selected>Choose priorirty</option>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
-          <div id="formButtons">
-            <button type="submit" id="add-Task">
-              <span>Add</span>
-            </button>
-
-            <button type="button" id="edit-Task">
-              <span>Edit</span>
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-</html> -->
