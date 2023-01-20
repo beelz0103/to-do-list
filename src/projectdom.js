@@ -39,6 +39,7 @@ function showProjectForm() {
   newProjectButton.style.display = "none";
   document.querySelector("#pr-title").focus();
   taskManipulator.hideTaskForm();
+  addProjectButton.disabled = true;
 }
 
 function hideProjectForm() {
