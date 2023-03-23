@@ -4,6 +4,7 @@ import {
   deleteProjectObj,
   Today,
   Week,
+  Month,
 } from "./project";
 
 import { taskManipulator, taskView } from "./taskdom";
@@ -99,6 +100,16 @@ const renderThisWeek = () => {
   });
 };
 
+const renderThisMonth = () => {
+  const thisWeek = document.querySelector("#thisMonth");
+  thisWeek.addEventListener("click", () => {
+    hideProjectForm();
+    const thisWeekPrj = Month();
+    taskView.createNewTaskView(thisWeekPrj);
+    higlightProjectDiv(thisWeek);
+  });
+};
+
 function renderSideBarProjectOnly() {
   const projectContainer = document.querySelector("#project-container");
   projectContainer.textContent = "";
@@ -142,6 +153,10 @@ const currentProject = () => {
     const projecttoreturn = Week();
     return projecttoreturn;
   }
+  if (projectId === "TMONTH") {
+    const projecttoreturn = Month();
+    return projecttoreturn;
+  }
   return allProjects.filter((value) => value.id === projectId)[0];
 };
 
@@ -181,10 +196,12 @@ function clearAllProjectDivHighlight() {
   const inbx = document.querySelector("#sidebar div");
   const today = document.querySelector("#today");
   const thisWeek = document.querySelector("#thisWeek");
+  const thisMonth = document.querySelector("#thisMonth");
   const projectsItems = document.querySelectorAll("#project-container div");
   inbx.classList.remove("higlight");
   today.classList.remove("higlight");
   thisWeek.classList.remove("higlight");
+  thisMonth.classList.remove("higlight");
   projectsItems.forEach((value) => value.classList.remove("higlight"));
 }
 
@@ -202,4 +219,5 @@ export {
   hideProjectForm,
   renderSideBarProjectOnly,
   renderThisWeek,
+  renderThisMonth,
 };

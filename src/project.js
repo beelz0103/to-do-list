@@ -1,4 +1,4 @@
-import { isToday, isThisWeek } from "date-fns";
+import { isToday, isThisWeek, isThisMonth } from "date-fns";
 import { deleteTaskObj } from "./task";
 
 let prjId = null;
@@ -42,6 +42,15 @@ const Week = () => {
   return thisWeekObj;
 };
 
+const Month = () => {
+  const thisMonthObj = { title: "thisMonth", id: "TMONTH", tasks: [] };
+  thisMonthObj.tasks = allProjects[0].tasks.filter((task) => task.date !== "");
+  thisMonthObj.tasks = thisMonthObj.tasks.filter((task) =>
+    isThisMonth(task.date)
+  );
+  return thisMonthObj;
+};
+
 export {
   allProjects,
   project,
@@ -49,5 +58,6 @@ export {
   deleteProjectObj,
   Today,
   Week,
+  Month,
   createProjectObject,
 };

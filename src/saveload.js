@@ -3,6 +3,7 @@ import {
   projectFormController,
   renderInbox,
   renderThisWeek,
+  renderThisMonth,
   renderToday,
   renderSideBarProjectOnly,
 } from "./projectdom";
@@ -38,6 +39,7 @@ function renderTodo() {
   renderInbox();
   renderToday();
   renderThisWeek();
+  renderThisMonth();
   taskManipulator.taskFormController();
 }
 
